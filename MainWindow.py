@@ -59,6 +59,8 @@ class MainWindow():
                 if self.grid[i][j] == 1:
                     #print("i = ",i, " j = ",j) 
                     self.color = RED
+                elif self.grid[i][j] == 2:
+                    self.color = GREEN
                 pygame.draw.rect(window,self.color,
                                  [(margin + block) * j + margin,
                                   (margin + block) * i + margin,
@@ -73,8 +75,14 @@ class MainWindow():
 
         
         pygame.display.flip()
+##
+##    def greenButtonClicked(self):
+##        mouse = pygame.mouse,get_pos()
+##        if 550+50 > mouse[0] > 550 and 50+50 > mouse[1] > 50:
+            
 
     def clickBox(self):
+        self.toggleNum = 1
         while not self.done:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -84,10 +92,14 @@ class MainWindow():
                     if pos[0] <= 525 and pos[1] <= 525:
                         column = pos[0] // (block + margin)
                         row = pos[1] // (block + margin)
-                        self.grid[row][column] = 1
+                        self.grid[row][column] = self.toggleNum
                         #print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
                         self.drawMap()
                         #self.changeColor()
+                    if 550+50 > pos[0] > 550 and 50+50 > pos[1] > 50:
+                        self.toggleNum = 2
+                        print("Green ja")
+
                     else:
                         print("Out of bound")
 
@@ -102,6 +114,8 @@ class MainWindow():
                                      [(margin + block) * i + margin,
                                       (margin + block) * j + margin,
                                        block, block])
+
+
         
     def getMatrix(self):
         return self.grid
