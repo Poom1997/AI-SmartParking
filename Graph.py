@@ -12,6 +12,11 @@ class Graph:
                         [0,0,0,1,0,0,0,1,0],
                         [0,0,0,0,0,0,1,0,1],
                         [0,0,0,0,0,1,0,1,0]];
+        self.heuristic_dict = {}
+
+    def setGraph(self, mat):
+        # set inital matrix at first.
+        pass
 
     def updateGraph(self):
         #also update h(n) using updateHeuristic()
@@ -53,8 +58,15 @@ class Graph:
         p.consult("heuristic.pl")
         result = p.query("heuristic(n" + destination + ",Result)")
         dict_hn = list(result)[0]
-        print(dict_hn['Result'])
-
+        
+        #token to dict
+        buffer_list = []
+        for i in range(len(dict_hn['Result'])):
+            temp_list = (str(dict_hn['Result'][i])).split(',')
+            buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
+        self.heuristic_dict['n' + str(Node)] = buffer_list
+        print(self.heuristic_dict)
+        
     def printAllNode(self):
         #use to debug
         for i in range(0, len(self.adj_mat)):
