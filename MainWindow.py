@@ -39,13 +39,9 @@ class MainWindow():
                 else:
                     self.grid[i].append(0)
                 
-
-        print(self.grid)
-
         for a in range(self.row):
             for b in range(self.column):
                 if self.grid[a][b] == 1:
-
                     pass
                    # print(a," and ",b)
                    
@@ -64,8 +60,8 @@ class MainWindow():
                     #print("i = ",i, " j = ",j) 
                     self.color = RED
                 pygame.draw.rect(window,self.color,
-                                 [(margin + block) * i + margin,
-                                  (margin + block) * j + margin,
+                                 [(margin + block) * j + margin,
+                                  (margin + block) * i + margin,
                                    block, block])
 
         green_button = pygame.draw.rect(window,GREEN,(550,50,50,50))
@@ -89,8 +85,9 @@ class MainWindow():
                         column = pos[0] // (block + margin)
                         row = pos[1] // (block + margin)
                         self.grid[row][column] = 1
-                        print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
-                        self.changeColor()
+                        #print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
+                        self.drawMap()
+                        #self.changeColor()
                     else:
                         print("Out of bound")
 
