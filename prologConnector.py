@@ -1,10 +1,8 @@
-row = 5
-col = 5
-testData = [[0,0,0,0,0],
-            [0,1,0,1,0],
-            [0,1,0,1,0],
-            [0,1,0,1,0],
-            [0,0,0,0,0]] 
+row = 3
+col = 3
+testData = [[0,0,0],
+            [0,1,0],
+            [0,1,0]] 
 
 def newMatrixGenerator(row, col):
     temp = [[0 for x in range(row*col)] for y in range(col*row)]
