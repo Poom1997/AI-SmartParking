@@ -93,10 +93,10 @@ class MainWindow():
                         column = pos[0] // (block + margin)
                         row = pos[1] // (block + margin)
                         self.grid[row][column] = self.toggleNum
-                        #print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
+                        print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
                         self.drawMap()
                         #self.changeColor()
-                    if 550+50 > pos[0] > 550 and 50+50 > pos[1] > 50:
+                    elif 550+50 > pos[0] > 550 and 50+50 > pos[1] > 50:
                         self.toggleNum = 2
                         print("Green ja")
 
