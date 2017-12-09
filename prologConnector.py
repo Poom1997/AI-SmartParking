@@ -2,7 +2,8 @@ row = 3
 col = 3
 testData = [[0,0,0],
             [0,1,0],
-            [0,1,0]] 
+            [0,1,0]]
+testReturn = [6,3,0,1,2,5,8]
 
 def newMatrixGenerator(row, col):
     temp = [[0 for x in range(row*col)] for y in range(col*row)]
@@ -37,5 +38,13 @@ def generateAdjcencyMatrix(row, col, inp_data):
                         newMatrix[newMatrixRow][newMatrixRow+col] = 1
     print(newMatrix)
 
+def generateReturnTuple(row, col, input_data):
+    temp = []
+    for i in input_data:
+        x = i//row
+        y = i%col
+        temp.append((x,y))
+    print(temp)
     
 generateAdjcencyMatrix(row, col, testData)
+generateReturnTuple(3,3,testReturn)
