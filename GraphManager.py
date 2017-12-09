@@ -9,8 +9,9 @@ class GraphManager:
         self.graph.setGraph(mat)
 
     def getPath(self, A, B):
-        self.graph.getPath(A , B)
         #return list of path from start node to destination
-        #return
+        path_list = self.graph.getPath(A , B)
+        return path_list
+        
     
         
