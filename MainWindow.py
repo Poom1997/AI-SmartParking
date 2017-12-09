@@ -45,7 +45,10 @@ class MainWindow():
         for a in range(self.row):
             for b in range(self.column):
                 if self.grid[a][b] == 1:
-                    print(a," and ",b)
+
+                    pass
+                   # print(a," and ",b)
+                   
 
         
 
@@ -86,7 +89,7 @@ class MainWindow():
                         column = pos[0] // (block + margin)
                         row = pos[1] // (block + margin)
                         self.grid[row][column] = 1
-                        #print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
+                        print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
                         self.changeColor()
                     else:
                         print("Out of bound")
