@@ -1,10 +1,34 @@
+from pyswip import Prolog
+
 class Graph:
     def __init__(self):
-        self.adj_mat = [];
+        #testing matrix 9 node
+        self.adj_mat = [[0,1,0,1,0,0,0,0,0],
+                        [1,0,1,0,0,0,0,0,0],
+                        [0,1,0,0,0,1,0,0,0],
+                        [1,0,0,0,0,0,1,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,1,0,0,0,0,0,1],
+                        [0,0,0,1,0,0,0,1,0],
+                        [0,0,0,0,0,0,1,0,1],
+                        [0,0,0,0,0,1,0,1,0]];
 
-    def setGraph(self, mat):
+    def updateGraph(self):
         #also update h(n) using updateHeuristic()
-        pass
+        Fact_list = []
+        for i in range(0, len(self.adj_mat)):
+            for j in range(0, len(self.adj_mat[i])):
+                if(self.adj_mat[i][j] == 1):
+                    fact = "node(n" + str(i + 1) + ", n" + str(j + 1) + ",1)."
+                    Fact_list.append(fact)
+                    
+        f= open("node.pl","w")
+        fact_buffer = ""
+        for i in Fact_list:
+            fact_buffer += i + "\n"
+        f.write(fact_buffer)
+        f.close()
+           
 
     def updateHeuristic(self):
         #generate heuristic (update every times that Map has been modified)
@@ -21,10 +45,21 @@ class Graph:
         #return list of path from start node to destination
         pass
 
-    def printHeuristic(self):
+    def printHeuristic(self , Node):
         #use to debug
-        pass
+        destination = str(Node)
+        p = Prolog()
+        p.consult("node.pl")
+        p.consult("heuristic.pl")
+        result = p.query("heuristic(n" + destination + ",Result)")
+        dict_hn = list(result)[0]
+        print(dict_hn['Result'])
 
     def printAllNode(self):
         #use to debug
-        pass
+        for i in range(0, len(self.adj_mat)):
+            for j in range(0, len(self.adj_mat[i])):
+                print(self.adj_mat[i][j], end = "  ")
+            print()
+                
+        
