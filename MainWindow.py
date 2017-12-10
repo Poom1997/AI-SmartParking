@@ -44,9 +44,6 @@ class MainWindow():
                 if self.grid[a][b] == 1:
                     pass
                    # print(a," and ",b)
-                   
-
-        
 
 
     def drawMap(self):
@@ -61,6 +58,8 @@ class MainWindow():
                     self.color = RED
                 elif self.grid[i][j] == 2:
                     self.color = GREEN
+                elif self.grid[i][j] == 3:
+                    self.color = BLUE
                 pygame.draw.rect(window,self.color,
                                  [(margin + block) * j + margin,
                                   (margin + block) * i + margin,
@@ -68,8 +67,8 @@ class MainWindow():
 
         green_button = pygame.draw.rect(window,GREEN,(550,50,50,50))
         blue_button = pygame.draw.rect(window,BLUE,(610,50,50,50))
-        green_button2 = pygame.draw.rect(window,GREEN,(550,110,50,50))
-        blue_button2 = pygame.draw.rect(window,BLUE,(610,110,50,50))
+        red_button = pygame.draw.rect(window,RED,(550,110,50,50))
+        bwhite_button = pygame.draw.rect(window,WHITE,(610,110,50,50))
         green_button3 = pygame.draw.rect(window,GREEN,(550,170,50,50))
         blue_button3 = pygame.draw.rect(window,BLUE,(610,170,50,50))
 
@@ -93,12 +92,21 @@ class MainWindow():
                         column = pos[0] // (block + margin)
                         row = pos[1] // (block + margin)
                         self.grid[row][column] = self.toggleNum
-                        print("CLICK at position: ",pos, "Grid Coordinates: ", row, column)
+                        print("Grid Coordinates: ", row, column, 'value: ',self.grid[row][column])
                         self.drawMap()
                         #self.changeColor()
+                    elif 610+50 > pos[0] > 610 and 110+50 > pos[1] > 110:
+                        self.toggleNum = 0
+                        print("White ja")
+                    elif 550+50 > pos[0] > 550 and 110+50 > pos[1] > 110:
+                        self.toggleNum = 1
+                        print("Red ja")
                     elif 550+50 > pos[0] > 550 and 50+50 > pos[1] > 50:
                         self.toggleNum = 2
                         print("Green ja")
+                    elif 610+50 > pos[0] > 610 and 50+50 > pos[1] > 50:
+                        self.toggleNum = 3
+                        print("Blue ja")
 
                     else:
                         print("Out of bound")
@@ -126,7 +134,42 @@ class MainWindow():
         pygame.display.update()
                 
         
-                
+class Car(MainWindow):
+    def __init__(self):
+        self.carNum = 0
+        self.carPosX = 0
+        self.carPosY = 0
+        self.initPosX = 0
+        self.initPosY = 0
+        self.initializer()
+        #self.moveLeft()
+
+    def initializer(self):
+        MainWindow.__init__(self)
+
+    def moveLeft(self):
+
+        MainWindow.getMatrix(self)
+
+    def moveRight(self):
+        #move car to the right
+        pass
+
+    def moveUp(self):
+        #move car up
+        pass
+
+    def moveDown(self):
+        #move car down
+        pass
+
+    def park(self):
+        #Car stop at the coordinate and stay there
+        pass
+
+    def move(self):
+        #get the move path for the car
+        pass
             
 
 MainWindow()
