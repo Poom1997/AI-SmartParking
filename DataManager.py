@@ -66,7 +66,7 @@ class DataManager:
                     if(i+1 <= row-1):
                         if(self.inputData[i+1][j] == 0):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
-        print(adjcencyMatrix)
+        #print(adjcencyMatrix)
 
     def generateReturnTuple(self):
         listTuple = []
