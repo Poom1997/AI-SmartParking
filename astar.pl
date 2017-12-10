@@ -3,31 +3,40 @@ explore(S,Elt):- findall(N, node(S,N,_), Elt).
 % use for 2nd case algorithm
 explore(S,Elt,NewElt):- findall(N, node(S,N,_), Ep),
 				append(Elt,Ep,NewElt).
-
+%-----------------------------------------------------------------------------------------
 %extract min of neigbor node (h(n) + g(n))  - consistent & admissible heuristic
-%n999 use to mark at Greatest number
-manhattan(n999,999).
-exstract_min(Elt,Inc, Min) :- findmin(Elt,Inc,n999,Min).
-findmin([],_,_,Min).
-findmin([H|T],Inc,Temp,Min) :- manhattan(H,X) ,write('pass1'),
-					 manhattan(Temp,Y) ,write(Y + Inc),
-					 (Y + Inc) >= (X + Inc) ,
-					 findmin(T,Inc,H,H),!.
-findmin([H|T],Inc,Temp,Min) :- manhattan(H,X) ,
-					 manhattan(Temp,Y) ,
-					 (Y + Inc) =< (X + Inc) ,
-					 findmin(T,Inc,Temp,Min).
 
-% append optimal node to path_list
+exstract_min([H|T],Gn,Min) :-  exstract_min(T,H,Min,Gn).
+exstract_min([],Min,Min,Gn):-!.
+exstract_min([H|T],M,Min,Gn) :-  manhattan(H,X1), 
+				 manhattan(M,Y2), 
+				 (X1 + Gn)  =< (Y2+ Gn) ,  
+				 exstract_min(T,H,Min,Gn).
+exstract_min([H|T],M,Min,Gn) :-  manhattan(M,X1),
+				 manhattan(H,Y2), 
+				 (X1 + Gn) <  (Y2+ Gn),   
+				 exstract_min(T,M,Min,Gn).
+%-----------------------------------------------------------------------------------------
+% go to next optimal node(Test)
+nextNode(S,Gn,Min) :- explore(S,Elt), exstract_min(Elt,Gn,Min),!.
 
-% dequeue = extract-min node (least f(n) = g(n) + h(n))
-dequeue([H|T], H ,T).
+%-----------------------------------------------------------------------------------------
+% Astar implementation
+astar(S,G,Path) :- astar(S,G,0,[S],Path).
+astar(G,G,_,Path,Path):- !.
+astar(S,G,Gn,Path,Answer):- nextNode(S,Gn,Next),
+				    Gn1 is Gn + 1,
+				    append(Path,[Next],Path1),
+				    astar(Next,G,Gn1,Path1,Answer).
 
-%Test access index
-test(S,Result) :- explore(S,Elt), match(Elt,0,Result).
+%-----------------------------------------------------------------------------------------
 
-%loop to access item
-match([H|_],0,H) :- !.
-match([_|T],N,H) :-N > 0, 
-    			 N1 is N-1,
-    			 match(T,N1,H).
+%node 6 is destination
+manhattan(n1,3).
+manhattan(n2,2).
+manhattan(n3,1).
+manhattan(n4,4).
+manhattan(n6,0).
+manhattan(n7,3).
+manhattan(n8,2).
+manhattan(n9,1).
