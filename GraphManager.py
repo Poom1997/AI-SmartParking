@@ -10,7 +10,7 @@ class GraphManager:
 
     def getPath(self, A, B , status):
         #return list of path from start node to destination
-        path_list = self.graph.getPath(A , B, status)
+        path_list = self.graph.getPath(A + 1, B + 1, status)
         return [x - 1 for x in path_list]
 
     def printNode(self):
