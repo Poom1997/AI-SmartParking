@@ -13,10 +13,14 @@ class Graph:
                         [0,0,0,0,0,0,1,0,1],
                         [0,0,0,0,0,1,0,1,0]];
         self.heuristic_dict = {}
+        self.goal = []
 
-    def setGraph(self, mat):
+    def setGraph(self, mat, goal):
         # set inital matrix at first.
-        pass
+        self.adj_mat = mat
+        self.updateGraph()
+        self.setGoal(goal)
+        self.updateHeuristic()
 
     def updateGraph(self):
         #also update h(n) using updateHeuristic()
@@ -33,13 +37,16 @@ class Graph:
             fact_buffer += i + "\n"
         f.write(fact_buffer)
         f.close()
-           
 
-    def updateHeuristic(self, Nodes):
+    def setGoal(self, goalList):
+        self.goal = goalList
+        
+    def updateHeuristic(self):
         #generate heuristic (update every times that Map has been modified)
         #update to dictionary (ready to use)
         #use to debug
-        for Node in Nodes:
+        self.heuristic_dict = {}
+        for Node in self.goal:
             destination = str(Node)
             p = Prolog()
             p.consult("node.pl")
@@ -54,20 +61,18 @@ class Graph:
                 buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
             self.heuristic_dict['n' + str(Node)] = buffer_list
 
-    def markGraph(self, Node, status):
-        #change mark status re-vise adj_mat
-        pass
-
-    def getPath(self, A , B):
+    def getPath(self, A , B ,status):
         #implement !!! A*!!!  use prolog  -genarate fact from adj_mat
         #findpath.p
         #return list of path from start node to destination
         #generate assertz H(n) first
         pass
 
+    #use to debug
     def printHeuristic(self):
         print(self.heuristic_dict)
         
+    #use to debug  
     def printAllNode(self):
         #use to debug
         for i in range(0, len(self.adj_mat)):
