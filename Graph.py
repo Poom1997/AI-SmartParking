@@ -35,36 +35,37 @@ class Graph:
         f.close()
            
 
-    def updateHeuristic(self):
+    def updateHeuristic(self, Nodes):
         #generate heuristic (update every times that Map has been modified)
-        #update to prolog fact(heuristic.p)
-        pass
+        #update to dictionary (ready to use)
+        #use to debug
+        for Node in Nodes:
+            destination = str(Node)
+            p = Prolog()
+            p.consult("node.pl")
+            p.consult("heuristic.pl")
+            result = p.query("heuristic(n" + destination + ",Result)")
+            dict_hn = list(result)[0]
+            
+            #token to dict
+            buffer_list = []
+            for i in range(len(dict_hn['Result'])):
+                temp_list = (str(dict_hn['Result'][i])).split(',')
+                buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
+            self.heuristic_dict['n' + str(Node)] = buffer_list
 
     def markGraph(self, Node, status):
         #change mark status re-vise adj_mat
-        pass    
+        pass
 
     def getPath(self, A , B):
         #implement !!! A*!!!  use prolog  -genarate fact from adj_mat
         #findpath.p
         #return list of path from start node to destination
+        #generate assertz H(n) first
         pass
 
-    def printHeuristic(self , Node):
-        #use to debug
-        destination = str(Node)
-        p = Prolog()
-        p.consult("node.pl")
-        p.consult("heuristic.pl")
-        result = p.query("heuristic(n" + destination + ",Result)")
-        dict_hn = list(result)[0]
-        
-        #token to dict
-        buffer_list = []
-        for i in range(len(dict_hn['Result'])):
-            temp_list = (str(dict_hn['Result'][i])).split(',')
-            buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
-        self.heuristic_dict['n' + str(Node)] = buffer_list
+    def printHeuristic(self):
         print(self.heuristic_dict)
         
     def printAllNode(self):
