@@ -3,7 +3,9 @@ from pyswip import Prolog
 class Graph:
     def __init__(self):
         #testing matrix 9 node
-        self.adj_mat = [[0,1,0,1,0,0,0,0,0],
+        self.adj_mat = []
+        '''
+         = [[0,1,0,1,0,0,0,0,0],
                         [1,0,1,0,0,0,0,0,0],
                         [0,1,0,0,0,1,0,0,0],
                         [1,0,0,0,0,0,1,0,0],
@@ -12,11 +14,16 @@ class Graph:
                         [0,0,0,1,0,0,0,1,0],
                         [0,0,0,0,0,0,1,0,1],
                         [0,0,0,0,0,1,0,1,0]];
+        '''
         self.heuristic_dict = {}
+        self.goal = []
 
-    def setGraph(self, mat):
+    def setGraph(self, mat, goal):
         # set inital matrix at first.
-        pass
+        self.adj_mat = mat
+        self.updateGraph()
+        self.setGoal(goal)
+        self.updateHeuristic()
 
     def updateGraph(self):
         #also update h(n) using updateHeuristic()
@@ -33,45 +40,78 @@ class Graph:
             fact_buffer += i + "\n"
         f.write(fact_buffer)
         f.close()
-           
 
+    def setGoal(self, goalList):
+        self.goal = goalList
+        
     def updateHeuristic(self):
         #generate heuristic (update every times that Map has been modified)
-        #update to prolog fact(heuristic.p)
-        pass
+        #update to dictionary (ready to use)
+        #use to debug
+        self.heuristic_dict = {}
+        for Node in self.goal:
+            destination = str(Node)
+            p = Prolog()
+            p.consult("node.pl")
+            p.consult("heuristic.pl")
+            result = p.query("heuristic(n" + destination + ",Result)")
+            dict_hn = list(result)[0]
+            
+            #token to dict
+            buffer_list = []
+            for i in range(len(dict_hn['Result'])):
+                temp_list = (str(dict_hn['Result'][i])).split(',')
+                buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
+            self.heuristic_dict['n' + str(Node)] = buffer_list
 
-    def markGraph(self, Node, status):
-        #change mark status re-vise adj_mat
-        pass    
-
-    def getPath(self, A , B):
+    def getPath(self, A , B ,status):
         #implement !!! A*!!!  use prolog  -genarate fact from adj_mat
         #findpath.p
         #return list of path from start node to destination
-        pass
+        #generate assertz H(n) first
 
-    def printHeuristic(self , Node):
-        #use to debug
-        destination = str(Node)
+        list_heuristic = self.heuristic_dict['n' + str(B)]
+        f= open("manhattan.pl","w")
+        fact_buffer = ""
+        for i in list_heuristic:
+            temp_manhattan = i.split(':')
+            fact_buffer += "manhattan(" + temp_manhattan[0]+ "," +temp_manhattan[1] + ").\n"
+        f.write(fact_buffer)
+        f.close()
+        
         p = Prolog()
         p.consult("node.pl")
-        p.consult("heuristic.pl")
-        result = p.query("heuristic(n" + destination + ",Result)")
-        dict_hn = list(result)[0]
+        p.consult("astar.pl")
+        p.consult("manhattan.pl")
+        result = p.query("astar(n" + str(A) + ',n' + str(B) + ",Result).")
+
+        if (status == 'enter'):
+            for i in range(len(self.adj_mat)):
+                if (self.adj_mat[i][B-1] == 1):
+                    self.adj_mat[i][B-1] = 2
+        else:
+            for i in range(len(self.adj_mat)):
+                if (self.adj_mat[i][A-1] == 2):
+                    self.adj_mat[i][A-1] = 1
+        self.updateGraph()
+        path_list = []
         
-        #token to dict
-        buffer_list = []
-        for i in range(len(dict_hn['Result'])):
-            temp_list = (str(dict_hn['Result'][i])).split(',')
-            buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
-        self.heuristic_dict['n' + str(Node)] = buffer_list
+        #print(list(result)[0]['Result'][0])
+    
+        for i in list(result)[0]['Result']:
+            path_list.append(str(i)[1:])
+        return [int(x) for x in path_list]
+    
+    #use to debug
+    def printHeuristic(self):
         print(self.heuristic_dict)
-        
+ 
+    #use to debug  
     def printAllNode(self):
         #use to debug
         for i in range(0, len(self.adj_mat)):
             for j in range(0, len(self.adj_mat[i])):
                 print(self.adj_mat[i][j], end = "  ")
             print()
-                
+              
         
