@@ -1,6 +1,6 @@
 from GraphManager import *
-row = 25
-col = 25
+row = 3
+col = 3
 testData = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -27,6 +27,10 @@ testData = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
             [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
+testData2 = [[0, 0, 2],
+             [0, 1, 0],
+             [0, 1, 3]]
+
 testReturn = [6,3,0,1,2,5,8]
 
 class DataManager:
@@ -49,28 +53,31 @@ class DataManager:
             for j in range(0,self.col):
                 newMatrixRow+=1
                 #check for restricted block
-                if(self.inputData[i][j] == 0):
+                if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     freeNode.append(newMatrixRow)
+                if(self.inputData[i][j] == 0 or self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     #check-left
                     if(j-1 >= 0):
-                        if(self.inputData[i][j-1] == 0):
+                        if(self.inputData[i][j-1] == 0 or self.inputData[i][j-1] == 2 or self.inputData[i][j-1] == 3):
                             adjcencyMatrix[newMatrixRow][newMatrixRow-1] = 1
 
                     #check-right
                     if(j+1 <= col-1):
-                        if(self.inputData[i][j+1] == 0):
+                        if(self.inputData[i][j+1] == 0 or self.inputData[i][j+1] == 2 or self.inputData[i][j+1] == 3):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+1] = 1
                             
                     #check-up
                     if(i-1 >= 0):
-                        if(self.inputData[i-1][j] == 0):
+                        if(self.inputData[i-1][j] == 0 or self.inputData[i-1][j] == 2 or self.inputData[i-1][j] == 3):
                             adjcencyMatrix[newMatrixRow][newMatrixRow-col] = 1
                             
                     #check-down
                     if(i+1 <= row-1):
-                        if(self.inputData[i+1][j] == 0):
+                        if(self.inputData[i+1][j] == 0 or self.inputData[i+1][j] == 2 or self.inputData[i+1][j] == 3):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
-                            
+
+        print(adjcencyMatrix)
+        print(freeNode)
         self.connector.setGraph(adjcencyMatrix, freeNode)
 
     def findFastestRoute(self, a, b, status = 'enter'):
@@ -85,5 +92,5 @@ class DataManager:
             listTuple.append((x,y))
         return listTuple
 
-a = DataManager(row, col, testData)
+a = DataManager(row, col, testData2)
 a.setup()
