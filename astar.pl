@@ -28,15 +28,3 @@ astar(S,G,Gn,Path,Answer):- nextNode(S,Gn,Next),
 				    Gn1 is Gn + 1,
 				    append(Path,[Next],Path1),
 				    astar(Next,G,Gn1,Path1,Answer).
-
-%-----------------------------------------------------------------------------------------
-
-%node 6 is destination
-manhattan(n1,3).
-manhattan(n2,2).
-manhattan(n3,1).
-manhattan(n4,4).
-manhattan(n6,0).
-manhattan(n7,3).
-manhattan(n8,2).
-manhattan(n9,1).
