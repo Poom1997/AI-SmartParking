@@ -71,7 +71,7 @@ class Graph:
     #use to debug
     def printHeuristic(self):
         print(self.heuristic_dict)
-        
+'''  
     #use to debug  
     def printAllNode(self):
         #use to debug
@@ -79,5 +79,5 @@ class Graph:
             for j in range(0, len(self.adj_mat[i])):
                 print(self.adj_mat[i][j], end = "  ")
             print()
-                
+'''               
         
