@@ -40,13 +40,16 @@ class DataManager:
         return newMatrix
     
     def generateAdjcencyMatrix(self):
+        newData = []
         adjcencyMatrix = self.generateZeroMatrix()
+        freeNode = []
         newMatrixRow = -1
         for i in range(0,self.row):
             for j in range(0,self.col):
                 newMatrixRow+=1
                 #check for restricted block
                 if(self.inputData[i][j] == 0):
+                    freeNode.append(newMatrixRow)
                     #check-left
                     if(j-1 >= 0):
                         if(self.inputData[i][j-1] == 0):
@@ -66,7 +69,9 @@ class DataManager:
                     if(i+1 <= row-1):
                         if(self.inputData[i+1][j] == 0):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
-        #print(adjcencyMatrix)
+        newData.append(adjcencyMatrix)
+        newData.append(freeNode)
+        print(newData[1])
 
     def generateReturnTuple(self):
         listTuple = []
