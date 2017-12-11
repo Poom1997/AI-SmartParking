@@ -3,7 +3,9 @@ from pyswip import Prolog
 class Graph:
     def __init__(self):
         #testing matrix 9 node
-        self.adj_mat = [[0,1,0,1,0,0,0,0,0],
+        self.adj_mat = []
+        '''
+         = [[0,1,0,1,0,0,0,0,0],
                         [1,0,1,0,0,0,0,0,0],
                         [0,1,0,0,0,1,0,0,0],
                         [1,0,0,0,0,0,1,0,0],
@@ -12,6 +14,7 @@ class Graph:
                         [0,0,0,1,0,0,0,1,0],
                         [0,0,0,0,0,0,1,0,1],
                         [0,0,0,0,0,1,0,1,0]];
+        '''
         self.heuristic_dict = {}
         self.goal = []
 
@@ -66,12 +69,43 @@ class Graph:
         #findpath.p
         #return list of path from start node to destination
         #generate assertz H(n) first
-        pass
 
+        list_heuristic = self.heuristic_dict['n' + str(B)]
+        f= open("manhattan.pl","w")
+        fact_buffer = ""
+        for i in list_heuristic:
+            temp_manhattan = i.split(':')
+            fact_buffer += "manhattan(" + temp_manhattan[0]+ "," +temp_manhattan[1] + ").\n"
+        f.write(fact_buffer)
+        f.close()
+        
+        p = Prolog()
+        p.consult("node.pl")
+        p.consult("astar.pl")
+        p.consult("manhattan.pl")
+        result = p.query("astar(n" + str(A) + ',n' + str(B) + ",Result).")
+
+        if (status == 'enter'):
+            for i in range(len(self.adj_mat)):
+                if (self.adj_mat[i][B-1] == 1):
+                    self.adj_mat[i][B-1] = 2
+        else:
+            for i in range(len(self.adj_mat)):
+                if (self.adj_mat[i][A-1] == 2):
+                    self.adj_mat[i][A-1] = 1
+        self.updateGraph()
+        path_list = []
+        
+        #print(list(result)[0]['Result'][0])
+    
+        for i in list(result)[0]['Result']:
+            path_list.append(str(i)[1:])
+        return [int(x) for x in path_list]
+    
     #use to debug
     def printHeuristic(self):
         print(self.heuristic_dict)
-'''  
+ 
     #use to debug  
     def printAllNode(self):
         #use to debug
@@ -79,5 +113,5 @@ class Graph:
             for j in range(0, len(self.adj_mat[i])):
                 print(self.adj_mat[i][j], end = "  ")
             print()
-'''               
+              
         
