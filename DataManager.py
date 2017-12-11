@@ -93,11 +93,14 @@ class DataManager:
             listTuple.append((x,y))
         return listTuple
 
-a = DataManager(row, col, testData)
-start_time = time.time()
-a.setup()
-print("--- %s seconds for setup ---" % (time.time() - start_time))
-start_time = time.time()
-print(a.findFastestRoute(601,623))
-print("--- %s seconds for shortest Path ---" % (time.time() - start_time))
+##a = DataManager(row, col, testData)
+##start_time = time.time()
+##a.setup()
+##print("--- %s seconds for setup ---" % (time.time() - start_time))
+##start_time = time.time()
+##print(a.findFastestRoute(601,623))
+##print("--- %s seconds for shortest Path ---" % (time.time() - start_time))
+##start_time = time.time()
+##print(a.findFastestRoute(601,623))
+##print("--- %s seconds for shortest Path ---" % (time.time() - start_time))
 
