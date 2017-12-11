@@ -11,7 +11,7 @@ BLUE = (0,0,225)
 GREEN = (0,255,0)
 margin = 1
 clock = pygame.time.Clock()
-clock.tick(60)
+clock.tick(80)
 
 
 
@@ -230,7 +230,7 @@ class Car():
     def createCar(self):
         print("Hello")
         self.grid[10][10] = 5
-        self.car1 = pygame.draw.rect(window,BLACK,[(margin+block)*10 + margin, (margin+block)*10 + margin, block, block])
+        self.car1 = pygame.draw.rect(window,BLACK,[(margin+block)*1 + margin, (margin+block)*1 + margin, block, block])
         pygame.display.flip()
 
     def clickJa(self):
@@ -241,18 +241,53 @@ class Car():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if 550+50 > pos[0] > 550 and 170+50 > pos[1] > 170:
-                        print("This is click")
-                        for i in range(21):
-                            self.moveController()
+                        #print("move down")
+                        #self.moveDown()
+                        self.moveToCoordinate()
+##                    elif 610+50 > pos[0] > 610 and 170+50 > pos[1] > 170:
+##                        print("move right")
+##                        self.moveRight()
+##                    if 550+50 > pos[0] > 550 and 110+50 > pos[1] > 110:
+##                        print("move up")
+##                        self.moveUp()
+##                    elif 610+50 > pos[0] > 610 and 110+50 > pos[1] > 110:
+##                        print("move left")
+##                        self.moveLeft()
 
                         
     def moveController(self):
-        print("move")
         self.car1.move_ip(0,1)
         self.drawMap()
         self.car1 = pygame.draw.rect(window,BLACK,self.car1)
 
         pygame.display.flip()
+
+    def moveToCoordinate(self):
+        self.startUnit = (1,1)
+        self.testUnit = [(1,2), (1,3), (1,4), (2,4), (2,5), (3,5), (3,6),(4,6), (4,7), (4,8), (3,8), (3,9)]
+        self.length = len(self.testUnit)
+        for i in range(self.length):
+            if self.startUnit[0] < self.testUnit[i][0]:
+                print("right")
+                self.moveRight()
+                self.startUnit = self.testUnit[i]
+                
+            elif self.startUnit[0] > self.testUnit[i][0]:
+                print("left")
+                self.moveLeft()
+                self.startUnit = self.testUnit[i]
+
+            elif self.startUnit[1] < self.testUnit[i][1]:
+                print("down")               
+                self.moveDown()
+                self.startUnit = self.testUnit[i]
+                
+            elif self.startUnit[1] > self.testUnit[i][1]:
+                print("up")
+                self.moveUp()
+                self.startUnit = self.testUnit[i]
+                
+            
         
         
         
@@ -261,19 +296,41 @@ class Car():
         MainWindow.__init__(self)
 
     def moveLeft(self):
-        print(MainWindow.getMatrix())
+        for i in range(21):
+            self.car1.move_ip(-1,0)
+            self.drawMap()
+            self.car1 = pygame.draw.rect(window,BLACK,self.car1)
+            
+            pygame.display.flip()
+            pygame.time.wait(10)
 
     def moveRight(self):
-        #move car to the right
-        pass
+        for i in range(21):
+            self.car1.move_ip(1,0)
+            self.drawMap()
+            self.car1 = pygame.draw.rect(window,BLACK,self.car1)
+
+            pygame.display.flip()
+            pygame.time.wait(10)
+            
 
     def moveUp(self):
-        #move car up
-        pass
+        for i in range(21):
+            self.car1.move_ip(0,-1)
+            self.drawMap()
+            self.car1 = pygame.draw.rect(window,BLACK,self.car1)
+
+            pygame.display.flip()
+            pygame.time.wait(10)
 
     def moveDown(self):
-        #move car down
-        pass
+        for i in range(21):
+            self.car1.move_ip(0,1)
+            self.drawMap()
+            self.car1 = pygame.draw.rect(window,BLACK,self.car1)
+
+            pygame.display.flip()
+            pygame.time.wait(10)
 
     def park(self):
         #Car stop at the coordinate and stay there
