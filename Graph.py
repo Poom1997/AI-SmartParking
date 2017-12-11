@@ -59,7 +59,9 @@ class Graph:
             
             #token to dict
             buffer_list = []
+            print(len(dict_hn['Result']))
             for i in range(len(dict_hn['Result'])):
+                print(buffer_list)
                 temp_list = (str(dict_hn['Result'][i])).split(',')
                 buffer_list.append(str(temp_list[0])[2:] + ":" + str(int(temp_list[1])))
             self.heuristic_dict['n' + str(Node)] = buffer_list
