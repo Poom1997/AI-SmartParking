@@ -302,7 +302,7 @@ class Car():
             self.car1 = pygame.draw.rect(window,BLACK,self.car1)
             
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(5)
 
     def moveRight(self):
         for i in range(21):
@@ -311,7 +311,7 @@ class Car():
             self.car1 = pygame.draw.rect(window,BLACK,self.car1)
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(5)
             
 
     def moveUp(self):
@@ -321,7 +321,7 @@ class Car():
             self.car1 = pygame.draw.rect(window,BLACK,self.car1)
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(5)
 
     def moveDown(self):
         for i in range(21):
@@ -330,7 +330,7 @@ class Car():
             self.car1 = pygame.draw.rect(window,BLACK,self.car1)
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(5)
 
     def park(self):
         #Car stop at the coordinate and stay there
