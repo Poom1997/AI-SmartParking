@@ -80,9 +80,9 @@ class DataManager:
         print(freeNode)
         self.connector.setGraph(adjcencyMatrix, freeNode)
 
-    def findFastestRoute(self, a, b, status = 'enter'):
+    def findFastestRoute(self, a=601, b=623, status = 'enter'):
         self.outputData = self.connector.getPath(a,b,status)
-        print(self.outputData)
+        #print(self.outputData)
         return self.returnTuple()
     
     def returnTuple(self):
