@@ -103,8 +103,9 @@ class Graph:
         return [int(x) for x in path_list]
     
     #use to debug
-    def printHeuristic(self):
-        print(self.heuristic_dict)
+    def getHeuristic(self, Node):
+        return self.heuristic_dict['n' + str(Node)]
+        
  
     #use to debug  
     def printAllNode(self):
