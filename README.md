@@ -23,10 +23,11 @@
 
 # ADDITIONAL DESCRIPTION
 
-  **None**
+  **External Library Dependency:**
+  **1)** Python-Prolog Connector (pyswip) : https://github.com/yuce/pyswip
 
 # 
-**PROGRAM VERSION: 0.2.3(ALPHA)<br>**
+**PROGRAM VERSION: 0.6.73(ALPHA)<br>**
 ALL COMPONENTS IN THE ALPHA VERSION OF THE PROGRAM CAN BE CHANGED OR PUBLISHED WITHOUT ANY RELEASE NOTES<br>
 
 THIS DOCUMENT IS CREATED AS-OF 12 DECEMBER 2017<br>
