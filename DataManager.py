@@ -49,13 +49,16 @@ class DataManager:
     def setup(self):
         adjcencyMatrix = self.generateZeroMatrix()
         freeNode = []
+        exitNode = []
         newMatrixRow = -1
         for i in range(0,self.row):
             for j in range(0,self.col):
                 newMatrixRow+=1
                 #check for restricted block
-                if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
+                if(self.inputData[i][j] == 2):
                     freeNode.append(newMatrixRow)
+                elif(self.inputData[i][j] == 3):
+                    exitNode.append(newMatrixRow)
                 if(self.inputData[i][j] == 0 or self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     #check-left
                     if(j-1 >= 0):
@@ -78,7 +81,7 @@ class DataManager:
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
 
         print(freeNode)
-        self.connector.setGraph(adjcencyMatrix, freeNode)
+        self.connector.setGraph(adjcencyMatrix, freeNode ,exitNode)
 
     def findFastestRoute(self, a=601, b=623, status = 'enter'):
         self.outputData = self.connector.getPath(a,b,status)
