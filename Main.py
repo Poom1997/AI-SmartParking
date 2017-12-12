@@ -34,6 +34,11 @@ class EditMap:
         for i in table:
             if(len(i) is not 0):
                 self.grid.append(i)
+                
+    def saveMap(self):
+        with open('test_file.csv', 'w') as csvfile:
+            writer = csv.writer(csvfile)
+            [writer.writerow(r) for r in self.grid]
             
     def drawMap(self):
         for i in range(self.row):
@@ -65,6 +70,8 @@ class EditMap:
         yellow_button1 = pygame.draw.rect(window,YELLOW,(550,230,50,50))
         yellow_button2 = pygame.draw.rect(window,YELLOW,(610,230,50,50))
         start_button = pygame.draw.rect(window,WHITE,(550,290,110,50))
+        save_button = pygame.draw.rect(window,WHITE,(80,535,100,25))
+        load_button = pygame.draw.rect(window,WHITE,(320,535,100,25))
            
     def main_loop(self):
         #Event Handling
@@ -96,6 +103,10 @@ class EditMap:
                         print("Go to ClickBox")
                     elif 610+50 > pos[0] > 610 and 170+50 > pos[1] > 170:
                         print("Go to Simulate")
+                    ## SaveButton
+                    elif 80+100 > pos[0] > 80 and 535+25 > pos[1] > 535:
+                        print("saveMap")
+                        self.saveMap()
                     else:
                         print("Out of bound")
 
@@ -165,6 +176,7 @@ class MainSimulation:
                 self.grid.append(i)
 
     def setup(self):
+        print("in")
         self.prologConnector = DataManager(self.row, self.column, self.grid)
         self.prologConnector.setup()
 
@@ -198,6 +210,8 @@ class MainSimulation:
         yellow_button1 = pygame.draw.rect(window,YELLOW,(550,230,50,50))
         yellow_button2 = pygame.draw.rect(window,YELLOW,(610,230,50,50))
         start_button = pygame.draw.rect(window,WHITE,(550,290,110,50))
+        save_button = pygame.draw.rect(window,WHITE,(80,535,100,25))
+        load_button = pygame.draw.rect(window,WHITE,(320,535,100,25))
 
     def createCar(self):
         self.car1 = pygame.draw.rect(window,BLACK,[(margin+block)*1 + margin + self.carPosX, (margin+block)*24 + margin + self.carPosY, block+1, block+1])
