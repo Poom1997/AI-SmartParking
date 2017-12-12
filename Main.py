@@ -6,12 +6,43 @@ from System_Settings import *
 
 class Menu:
     def __init__(self):
-        m = MainSimulation()
-        m.main_loop()
-##        m = EditMap()
-##        m.main_loop()
+        self.run = True
+        self.simulate = MainSimulation()
+        self.edit = EditMap()
+        self.drawMenu()
 
-#Start Simulation Mode
+    def drawMenu(self):
+        window.blit(mainMenuPic,(0,0))
+        window.blit(editButtonPic,((70,240),(350,310)))
+        window.blit(simulateButtonPic,((70,360),(350,430)))
+        window.blit(exitButtonPic,((525,460),(680,500)))
+    
+
+    def main_loop(self):
+        #Event Handling
+        while self.run:
+            self.drawMenu()
+            for event in pygame.event.get():
+                if(event.type == pygame.QUIT):
+                    pygame.quit()
+                    sys.exit()
+                if(event.type == pygame.MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                    if 350 > pos[0] > 70 and 310 > pos[1] > 240:
+                        self.edit.main_loop()
+                    elif 350 > pos[0] > 70 and 430 > pos[1] > 360:
+                        self.simulate.main_loop()
+                    elif 680 > pos[0] > 525 and 500 > pos[1] > 460:
+                        pygame.quit()
+                        sys.exit()
+                    
+
+            pygame.display.update()
+            clock.tick(80)
+
+    
+
+#Start Map edit Mode
 class EditMap:
     def __init__(self):
         self.x = 0
@@ -27,6 +58,22 @@ class EditMap:
 
     def parkingMap(self):
         self.grid = []
+        for i in range(self.row):
+            self.grid.append([])
+            for j in range(self.column):
+                if i == 0 or i == self.row-1 or j == 0 or j == self.column-1:
+                    #print("i = ",i, " j = ",j) 
+                    self.grid[i].append(1)
+                else:
+                    self.grid[i].append(0)
+                
+    def saveMap(self):
+        with open('test_file.csv', 'w') as csvfile:
+            writer = csv.writer(csvfile)
+            [writer.writerow(r) for r in self.grid]
+            
+    def loadMap(self):
+        self.grid = []
         with open('test_file.csv', 'r') as csvfile:
             reader = csv.reader(csvfile)
             table = [[int(e) for e in r] for r in reader]
@@ -34,18 +81,14 @@ class EditMap:
         for i in table:
             if(len(i) is not 0):
                 self.grid.append(i)
-                
-    def saveMap(self):
-        with open('test_file.csv', 'w') as csvfile:
-            writer = csv.writer(csvfile)
-            [writer.writerow(r) for r in self.grid]
+        
             
     def drawMap(self):
         for i in range(self.row):
             for j in range(self.column):
                 self.color = WHITE
-                if self.grid[i][j] == 1:
-                    pass
+                if self.grid[i][j] == 0:
+                    self.color = WHITE
                     #print(i," and ",j)
                 if self.grid[i][j] == 1:
                     #print("i = ",i, " j = ",j) 
@@ -61,21 +104,33 @@ class EditMap:
                                   (margin + block) * i + margin,
                                    block, block])
 
-        green_button = pygame.draw.rect(window,GREEN,(550,50,50,50))
-        blue_button = pygame.draw.rect(window,BLUE,(610,50,50,50))
-        red_button = pygame.draw.rect(window,RED,(550,110,50,50))
-        white_button = pygame.draw.rect(window,WHITE,(610,110,50,50))
-        green_button3 = pygame.draw.rect(window,GREEN,(550,170,50,50))
-        blue_button3 = pygame.draw.rect(window,BLUE,(610,170,50,50))
-        yellow_button1 = pygame.draw.rect(window,YELLOW,(550,230,50,50))
-        yellow_button2 = pygame.draw.rect(window,YELLOW,(610,230,50,50))
-        start_button = pygame.draw.rect(window,WHITE,(550,290,110,50))
-        save_button = pygame.draw.rect(window,WHITE,(80,535,100,25))
-        load_button = pygame.draw.rect(window,WHITE,(320,535,100,25))
+        green_button  = pygame.draw.rect(window,GREEN, (550,50,130,50))
+        red_button    = pygame.draw.rect(window,RED,   (550,115,130,50))
+        blue_button   = pygame.draw.rect(window,BLUE,  (550,180,130,50))
+        purple_button = pygame.draw.rect(window,PURPLE,(550,245,130,50))
+        white_button  = pygame.draw.rect(window,WHITE, (550,310,130,50))
+        
+        save_button = pygame.draw.rect(window,CYAN,(550,385,130,25))
+        clear_button = pygame.draw.rect(window,CYAN,(550,430,130,25))
+        load_button = pygame.draw.rect(window,CYAN,(550,475,130,25))
+
+        window.blit(panelText, (541,10))
+        window.blit(parkingText, (560,60))
+        window.blit(wallText,(585,123))
+        window.blit(entranceText,(565,190))
+        window.blit(exitText,(590,253))
+        window.blit(pathText,(590,318))
+
+        
+        window.blit(saveText,(594,387))
+        window.blit(loadText,(594,432))
+        window.blit(clearText,(592,477))
            
     def main_loop(self):
         #Event Handling
         while self.run:
+            window.blit(menuPic,(0,0))
+            window.fill(BLACK,((0,0),(525,525)))
             self.drawMap()
             for event in pygame.event.get():
                 if(event.type == pygame.QUIT):
@@ -87,26 +142,33 @@ class EditMap:
                     row = pos[1] // (block + margin)
                     if pos[0] <= 525 and pos[1] <= 525:
                         self.grid[row][column] = self.toggleNum
-                    elif 610+50 > pos[0] > 610 and 110+50 > pos[1] > 110:
+                    elif 550+130 > pos[0] > 550 and 310+50 > pos[1] > 310:
                         self.toggleNum = 0
-                        print("White ja")
-                    elif 550+50 > pos[0] > 550 and 110+50 > pos[1] > 110:
+                        print("Path")
+                    elif 550+130 > pos[0] > 550 and 115+50 > pos[1] > 115:
                         self.toggleNum = 1
-                        print("Red ja")
-                    elif 550+50 > pos[0] > 550 and 50+50 > pos[1] > 50:
+                        print("Wall")
+                    elif 550+130 > pos[0] > 550 and 50+50 > pos[1] > 50:
                         self.toggleNum = 2
-                        print("Green ja")
-                    elif 610+50 > pos[0] > 610 and 50+50 > pos[1] > 50:
+                        print("Parking Lot")
+                    elif 550+130 > pos[0] > 550 and 180+50 > pos[1] > 180:
                         self.toggleNum = 3
-                        print("Blue ja")
-                    elif 550+50 > pos[0] > 550 and 170+50 > pos[1] > 170:
-                        print("Go to ClickBox")
-                    elif 610+50 > pos[0] > 610 and 170+50 > pos[1] > 170:
-                        print("Go to Simulate")
+                        print("Entrance")
+                    elif 550+130 > pos[0] > 550 and 245+50 > pos[1] > 245:
+                        print("Exit")
+                   
                     ## SaveButton
-                    elif 80+100 > pos[0] > 80 and 535+25 > pos[1] > 535:
+                    elif 550+130 > pos[0] > 550 and 385+25 > pos[1] > 385:
                         print("saveMap")
                         self.saveMap()
+                    ## LoadButton
+                    elif 550+130 > pos[0] > 550 and 430+25 > pos[1] > 430:
+                        print("loadMap")
+                        self.loadMap()
+                    ## ClearButton
+                    elif 550 + 130 > pos[0] > 550 and 475+25 > pos[1] > 475:
+                        print('clearMap')
+                        self.parkingMap()
                     else:
                         print("Out of bound")
 
@@ -130,6 +192,10 @@ class MainSimulation:
         self.initPosX = 0
         self.initPosY = 0
         self.currentMovingNode = 0
+
+        self.carNo1 = 8
+        self.carNo2 = 5
+        self.tempColor = WHITE
         
         self.grid = []
         self.pathway = []
@@ -156,6 +222,10 @@ class MainSimulation:
         self.carPosY = 0
         self.initPosX = 0
         self.initPosY = 0
+
+        self.carNo1 = 8
+        self.carNo2 = 5
+        self.tempColor = WHITE
         
         self.grid = []
         self.pathway = []
@@ -181,6 +251,11 @@ class MainSimulation:
         self.prologConnector.setup()
 
     def drawMap(self):
+        self.strCarNo1 = str(self.carNo1)
+        self.strCarNo2 = str(self.carNo2)
+        self.carNoText1 = font3.render(self.strCarNo1,True, self.tempColor)
+        self.carNoText2 = font3.render(self.strCarNo2,True, self.tempColor)
+        parkingText = font1.render("Car Park",True, BLACK)
         for i in range(self.row):
             for j in range(self.column):
                 self.color = WHITE
@@ -201,17 +276,32 @@ class MainSimulation:
                                   (margin + block) * i + margin,
                                    block, block])
 
-        green_button = pygame.draw.rect(window,GREEN,(550,50,50,50))
-        blue_button = pygame.draw.rect(window,BLUE,(610,50,50,50))
-        red_button = pygame.draw.rect(window,RED,(550,110,50,50))
-        white_button = pygame.draw.rect(window,WHITE,(610,110,50,50))
-        green_button3 = pygame.draw.rect(window,GREEN,(550,170,50,50))
-        blue_button3 = pygame.draw.rect(window,BLUE,(610,170,50,50))
-        yellow_button1 = pygame.draw.rect(window,YELLOW,(550,230,50,50))
-        yellow_button2 = pygame.draw.rect(window,YELLOW,(610,230,50,50))
-        start_button = pygame.draw.rect(window,WHITE,(550,290,110,50))
-        save_button = pygame.draw.rect(window,WHITE,(80,535,100,25))
-        load_button = pygame.draw.rect(window,WHITE,(320,535,100,25))
+        decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
+        increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
+        decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
+        increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
+        start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
+        stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
+        exit_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
+
+        window.blit(carEntranceText1, (555,10))
+        window.blit(carEntranceText2, (555,140))
+
+        window.blit(decText1, (560,45))
+        window.blit(incText1, (655,50))
+        window.blit(decText2, (560,175))
+        window.blit(incText2, (655,180))
+
+        window.blit(self.carNoText1, (605,50))
+        window.blit(self.carNoText2, (605,180))
+
+        
+        window.blit(startText, (592,290))
+        window.blit(stopText, (555,365))
+        window.blit(exitText2, (598,440))
+
+        
+
 
     def createCar(self):
         self.car1 = pygame.draw.rect(window,BLACK,[(margin+block)*1 + margin + self.carPosX, (margin+block)*24 + margin + self.carPosY, block+1, block+1])
@@ -280,6 +370,8 @@ class MainSimulation:
     def main_loop(self):
         #Event Handling
         while self.run:
+            window.blit(menuPic,(0,0))
+            window.fill(BLACK,((0,0),(525,525)))
             self.drawMap()
             self.createCar()
             for event in pygame.event.get():
@@ -290,14 +382,64 @@ class MainSimulation:
                     pos = pygame.mouse.get_pos()
                     column = pos[0] // (block + margin)
                     row = pos[1] // (block + margin)
-                    if 550+110 > pos[0] > 550 and 290+50 > pos[1] > 290:
+                    
+                    if 550+140 > pos[0] > 550 and 290+35 > pos[1] > 290:
                         if(self.calculate == True):
                             self.carPosY-=2
                             print('in')
                             self.calculatePath()
+                        elif self.grid[row][column] == 4:
+                            print("Goto Exit")
                             
-                    elif self.grid[row][column] == 4:
-                        print("Goto Exit")
+                    ################### increase and decrease #################
+                    elif 550+40 > pos[0] > 550 and 50+70 > pos[1] > 50:
+                        if self.carNo1 == 0:
+                            self.tempColor = BLACK
+                            window.blit(self.carNoText1, (605,50))
+                            self.tempColor = WHITE
+                            self.carNo1 = 9
+                            window.blit(self.carNoText1, (605,50))
+                        else:
+                            self.tempColor = BLACK
+                            window.blit(self.carNoText1, (605,50))
+                            self.carNo1 -= 1
+                            self.tempColor = WHITE
+                            window.blit(self.carNoText1, (605,50))
+
+                    elif 650+40 > pos[0] > 650 and 50+70 > pos[1] > 50:
+                        if self.carNo1 == 9:
+                            self.tempColor = BLACK
+                            window.blit(self.carNoText1, (605,50))
+                            self.tempColor = WHITE
+                            self.carNo1 = 0
+                            window.blit(self.carNoText1, (605,50))
+
+                        else:
+                            self.tempColor = BLACK
+                            window.blit(self.carNoText1, (605,50))
+                            self.tempColor = WHITE
+                            self.carNo1 += 1
+                            window.blit(self.carNoText1, (605,50))
+                            
+                    elif 550+40 > pos[0] > 550 and 180+70 > pos[1] > 180:
+                        if self.carNo2 == 0:
+                            self.carNo2 = 9
+                        else:
+                            self.carNo2 -= 1
+
+                    elif 650+40 > pos[0] > 650 and 180+70 > pos[1] > 180:
+                        if self.carNo2 == 9:
+                            self.carNo2 = 0
+                        else:
+                            self.carNo2 += 1
+
+##                    elif self.grid[row][column] == 4:
+##                        print("Goto Exit")
+
+                    else:
+                        print("Out of bound")
+                        
+                    
 
                         
             if(self.move == True):
