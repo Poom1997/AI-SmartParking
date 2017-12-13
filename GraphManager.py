@@ -16,7 +16,7 @@ class GraphManager:
     def park(self, node):
         #park nearest exit (use prolog)
         if(self.avaible_park == []):
-            return
+            return []
         heuristic_exit_list = []
         park_node = 0
         for i in self.exit:
@@ -48,7 +48,7 @@ class GraphManager:
     def autoexit(self, node):
         #exit at nearest exit (use prolog)
         if(node not in self.unavaible_park):
-            return
+            return []
         
         heuristic_exit_list = []
         heuristic_list = []
@@ -82,7 +82,7 @@ class GraphManager:
 
     def manual_exit(self, node, exit_node):
         if(node not in self.unavaible_park or exit_node not in self.exit):
-            return
+            return []
         self.avaible_park.append(node)
         self.unavaible_park.remove(node)
         return self.getPath(node ,exit_node ,'exit')
