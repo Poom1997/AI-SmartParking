@@ -24,9 +24,9 @@ testData = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 1],
             [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-            [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1]]
+            [1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1]]
 
 testData2 = [[0, 0, 2],
              [0, 1, 0],
@@ -52,21 +52,21 @@ class DataManager:
     def setup(self):
         adjcencyMatrix = self.generateZeroMatrix()
         freeNode = []
-        entranceNode = []
+        parkingNode = []
         exitNode = []
         newMatrixRow = -1
         for i in range(0,self.row):
             for j in range(0,self.col):
                 newMatrixRow+=1
                 #check for restricted block
-                if(self.inputData[i][j] > 4 or self.inputData[i][j] < 0):
+                if(self.inputData[i][j] > 5 or self.inputData[i][j] < 0):
                     raise InvalidDataFormat()
-                if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
-                    freeNode.append(newMatrixRow)
-##                if(self.inputData[i][j] == 2):
-##                    entranceNode.append(newMatrixRow)
-##                elif(self.inputData[i][j] == 2):
-##                    exitNode.append(newMatrixRow)
+##                if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
+##                    freeNode.append(newMatrixRow)
+                if(self.inputData[i][j] == 3):
+                    parkingNode.append(newMatrixRow)
+                elif(self.inputData[i][j] == 5):
+                    exitNode.append(newMatrixRow)
                 if(self.inputData[i][j] == 0 or self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     #check-left
                     if(j-1 >= 0):
@@ -88,23 +88,24 @@ class DataManager:
                         if(self.inputData[i+1][j] == 0 or self.inputData[i+1][j] == 2 or self.inputData[i+1][j] == 3):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
 
-        print(freeNode)
+        print(parkingNode)
+        print(exitNode)
         #self.connector.setGraph(adjcencyMatrix, freeNode ,exitNode)
-        self.connector.setGraph(adjcencyMatrix, freeNode)
+        self.connector.setGraph(adjcencyMatrix, parkingNode, exitNode)
 
-    def findFastestRoute(self, a=601, b=623, status = 'enter'):
-        self.outputData = self.connector.getPath(a,b,status)
-        #print(self.outputData)
-        return self.returnTuple()
+##    def findFastestRoute(self, a=601, b=623, status = 'enter'):
+##        self.outputData = self.connector.getPath(a,b,status)
+##        #print(self.outputData)
+##        return self.returnTuple()
 
     def findFastestParkingRoute(self, row, col):
         print(row * self.row-1 + col-1)
-        self.outputData = self.connector.park(row * self.row-1 + col-1)
+        self.outputData = self.connector.park(((row * self.row) + col))
         #print(self.outputData)
         return self.returnTuple()
     
-    def findFastestExitRoute(self, a=601, b=623, status = 'enter'):
-        self.outputData = self.connector.getPath(a,b,status)
+    def findFastestExitRoute(self, row, col):
+        self.outputData = self.connector.autoexit(((row * self.row) + col))
         #print(self.outputData)
         return self.returnTuple()
     
