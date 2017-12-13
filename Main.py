@@ -110,6 +110,8 @@ class EditMap:
                     self.color = BLUE
                 elif self.grid[i][j] == 4:
                     self.color = YELLOW
+                elif self.grid[i][j] == 5:
+                    self.color = PURPLE
                 pygame.draw.rect(window,self.color,
                                  [(margin + block) * j + margin,
                                   (margin + block) * i + margin,
@@ -166,6 +168,7 @@ class EditMap:
                         self.toggleNum = 3
                         print("Entrance")
                     elif 550+130 > pos[0] > 550 and 245+50 > pos[1] > 245:
+                        self.toggleNum = 5
                         print("Exit")
                    
                     ## SaveButton
@@ -259,6 +262,8 @@ class MainSimulation:
                     self.color = BLUE
                 elif self.grid[i][j] == 4:
                     self.color = YELLOW
+                elif self.grid[i][j] == 5:
+                    self.color = PURPLE
                 pygame.draw.rect(window,self.color,
                                  [(margin + block) * j + margin,
                                   (margin + block) * i + margin,
@@ -377,8 +382,11 @@ class MainSimulation:
                             self.carPosY-=2
                             print('in')
                             self.calculatePath()
-                        elif self.grid[row][column] == 4:
+                    elif 525> pos[0] > 0 and 525 > pos[1] >0:
+                        if self.grid[row][column] == 4:
                             print("Goto Exit")
+                        else:
+                            print("Not the car parking")
                     elif 550+140 > pos[0] > 550 and 365+35 > pos[1] > 365:
                         print("Stop")
                         
