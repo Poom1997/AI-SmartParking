@@ -33,12 +33,12 @@ pathText = font1.render("Path",True,BLACK)
 
 saveText = font2.render("Save",True,BLACK)
 loadText = font2.render("Load",True,BLACK)
-clearText = font2.render("Clear",True,BLACK)
+backText = font2.render("Back",True,BLACK)
 
 
 #Text in Simulation
-carEntranceText1 = font1.render("Entrance 1",True,WHITE)
-carEntranceText2 = font1.render("Entrance 2",True,WHITE)
+carEntranceText1 = font2.render("Entrance 1",True,WHITE)
+carEntranceText2 = font2.render("Entrance 2",True,WHITE)
 decText1 = font3.render("-",True,BLACK)
 incText1 = font3.render("+",True,BLACK)
 decText2 = font3.render("-",True,BLACK)
@@ -46,7 +46,7 @@ incText2 = font3.render("+",True,BLACK)
 
 startText = font1.render("Start!",True,BLACK)
 stopText = font1.render("Stop/Pause",True,BLACK)
-exitText2 = font1.render("Exit",True,BLACK)
+backText2 = font1.render("Back",True,BLACK)
 
 
 #picture

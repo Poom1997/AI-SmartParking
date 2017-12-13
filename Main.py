@@ -122,7 +122,7 @@ class EditMap:
         white_button  = pygame.draw.rect(window,WHITE, (550,310,130,50))
         
         save_button = pygame.draw.rect(window,CYAN,(550,385,130,25))
-        clear_button = pygame.draw.rect(window,CYAN,(550,430,130,25))
+        back_button = pygame.draw.rect(window,CYAN,(550,430,130,25))
         load_button = pygame.draw.rect(window,CYAN,(550,475,130,25))
 
         window.blit(panelText, (541,10))
@@ -135,7 +135,7 @@ class EditMap:
         
         window.blit(saveText,(594,387))
         window.blit(loadText,(594,432))
-        window.blit(clearText,(592,477))
+        window.blit(backText,(595,477))
            
     def main_loop(self):
         #Event Handling
@@ -179,7 +179,8 @@ class EditMap:
                     ## ClearButton
                     elif 550 + 130 > pos[0] > 550 and 475+25 > pos[1] > 475:
                         print('clearMap')
-                        self.parkingMap()
+                        m = Menu()
+                        m.main_loop()
                     else:
                         print("Out of bound")
 
@@ -207,9 +208,11 @@ class MainSimulation:
         self.carPosY = 0
         self.initPosX = 0
         self.initPosY = 0
+        self.xNumCoor1 = 605
+        self.xNumCoor2 = 605
 
-        self.carNo1 = 8
-        self.carNo2 = 5
+        self.carNo1 = 0
+        self.carNo2 = 0
         self.tempColor = WHITE
         
         self.grid = []
@@ -267,23 +270,23 @@ class MainSimulation:
         increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
         start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
         stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
-        exit_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
+        back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
 
-        window.blit(carEntranceText1, (555,10))
-        window.blit(carEntranceText2, (555,140))
+        window.blit(carEntranceText1, (585,10))
+        window.blit(carEntranceText2, (585,140))
 
         window.blit(decText1, (560,45))
         window.blit(incText1, (655,50))
         window.blit(decText2, (560,175))
         window.blit(incText2, (655,180))
 
-        window.blit(self.carNoText1, (605,50))
-        window.blit(self.carNoText2, (605,180))
+        window.blit(self.carNoText1, (self.xNumCoor1,50))
+        window.blit(self.carNoText2, (self.xNumCoor2,180))
 
         
         window.blit(startText, (592,290))
         window.blit(stopText, (555,365))
-        window.blit(exitText2, (598,440))
+        window.blit(backText2, (590,440))
 
         
 
@@ -369,54 +372,80 @@ class MainSimulation:
                     row = pos[1] // (block + margin)
                     
                     if 550+140 > pos[0] > 550 and 290+35 > pos[1] > 290:
+                        print("Start")
                         if(self.calculate == True):
                             self.carPosY-=2
                             print('in')
                             self.calculatePath()
                         elif self.grid[row][column] == 4:
                             print("Goto Exit")
+                    elif 550+140 > pos[0] > 550 and 365+35 > pos[1] > 365:
+                        print("Stop")
+                        
+                    elif 550+140 > pos[0] > 550 and 440+35 > pos[1] > 440:
+                        m = Menu()
+                        m.main_loop()
                             
                     ################### increase and decrease #################
                     elif 550+40 > pos[0] > 550 and 50+70 > pos[1] > 50:
-                        if self.carNo1 == 0:
-                            self.tempColor = BLACK
-                            window.blit(self.carNoText1, (605,50))
-                            self.tempColor = WHITE
-                            self.carNo1 = 9
-                            window.blit(self.carNoText1, (605,50))
-                        else:
-                            self.tempColor = BLACK
-                            window.blit(self.carNoText1, (605,50))
+                        if self.carNo1 == 10:
                             self.carNo1 -= 1
-                            self.tempColor = WHITE
-                            window.blit(self.carNoText1, (605,50))
+                            self.xNumCoor1 = 605
+                            
+                        elif self.carNo1 > 10:
+                            self.carNo1 -= 1
+                            self.xNumCoor1 = 590
+                        
+                        elif self.carNo1 == 0:
+                            self.carNo1 = 0
+                            self.xNumCoor1 = 605
+                            
+                        else:
+                            self.carNo1 -= 1
+                            self.xNumCoor1 = 605
 
                     elif 650+40 > pos[0] > 650 and 50+70 > pos[1] > 50:
-                        if self.carNo1 == 9:
-                            self.tempColor = BLACK
-                            window.blit(self.carNoText1, (605,50))
-                            self.tempColor = WHITE
-                            self.carNo1 = 0
-                            window.blit(self.carNoText1, (605,50))
-
-                        else:
-                            self.tempColor = BLACK
-                            window.blit(self.carNoText1, (605,50))
-                            self.tempColor = WHITE
+                        if self.carNo1 >= 10:
                             self.carNo1 += 1
-                            window.blit(self.carNoText1, (605,50))
+                            self.xNumCoor1 = 590
+                            
+                        elif self.carNo1 == 9:
+                            self.carNo1 += 1
+                            self.xNumCoor1 = 590
+                            
+                        else:
+                            self.carNo1 += 1
+                            self.xNumCoor1 = 605
                             
                     elif 550+40 > pos[0] > 550 and 180+70 > pos[1] > 180:
-                        if self.carNo2 == 0:
-                            self.carNo2 = 9
+                        if self.carNo2 == 10:
+                            self.carNo2 -= 1
+                            self.xNumCoor2 = 605
+                            
+                        elif self.carNo2 > 10:
+                            self.carNo2 -= 1
+                            self.xNumCoor2 = 590
+                        
+                        elif self.carNo2 == 0:
+                            self.carNo2 = 0
+                            self.xNumCoor2 = 605
+                            
                         else:
                             self.carNo2 -= 1
+                            self.xNumCoor2 = 605
 
                     elif 650+40 > pos[0] > 650 and 180+70 > pos[1] > 180:
-                        if self.carNo2 == 9:
-                            self.carNo2 = 0
+                        if self.carNo2 >= 10:
+                            self.carNo2 += 1
+                            self.xNumCoor2 = 590
+                            
+                        elif self.carNo2 == 9:
+                            self.carNo2 += 1
+                            self.xNumCoor2 = 590
+                            
                         else:
                             self.carNo2 += 1
+                            self.xNumCoor2 = 605
 
 ##                    elif self.grid[row][column] == 4:
 ##                        print("Goto Exit")
