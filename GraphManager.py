@@ -1,19 +1,12 @@
 from Graph import *
-from pyswip import Prolog
 
 class GraphManager:
     def __init__(self):
         self.graph = Graph()
-        self.avaible_park = []
-        self.unavaible_park = []
-        self.exit = []
 
-    def setGraph(self, mat , list_park , list_exit):
+    def setGraph(self, mat , goal):
         #always update the map when modify the map.
-        list_all_goal = list_park + list_exit
-        self.avaible_park = list_park
-        self.exit = list_exit
-        self.graph.setGraph(mat, [x + 1 for x in list_all_goal])
+        self.graph.setGraph(mat, [x + 1 for x in goal])
 
     def getPath(self, A, B , status):
         #return list of path from start node to destination
