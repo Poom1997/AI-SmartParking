@@ -117,6 +117,9 @@ class DataManager:
             y = i%self.col
             listTuple.append((x,y))
         return listTuple
+    
+    def getLenPark(self):
+        return self.connector.getLenPark()
 
 ##a = DataManager(row, col, testData)
 ##start_time = time.time()

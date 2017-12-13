@@ -97,5 +97,7 @@ class GraphManager:
 
     def printNode(self):
         self.graph.printAllNode()
-    
+
+    def getLenPark(self):
+        return len(self.avaible_park)
         

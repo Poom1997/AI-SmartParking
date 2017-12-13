@@ -37,8 +37,8 @@ backText = font2.render("Back",True,BLACK)
 
 
 #Text in Simulation
-carEntranceText1 = font2.render("Entrance 1",True,WHITE)
-carEntranceText2 = font2.render("Entrance 2",True,WHITE)
+carEntranceText1 = font1.render("Available Slot",True,CYAN)
+carEntranceText2 = font1.render("No. of Car",True,CYAN)
 decText1 = font3.render("-",True,BLACK)
 incText1 = font3.render("+",True,BLACK)
 decText2 = font3.render("-",True,BLACK)

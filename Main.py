@@ -270,7 +270,11 @@ class MainSimulation:
         self.xNumCoor1 = 605
         self.xNumCoor2 = 605
         self.car_list = []
+        self.availableSlot = 0
         self.clickCountCar = 0
+        self.carNo = 0
+        self.delay = 0
+        self.time = 0
 
         self.carNo1 = 0
         self.carNo2 = 0
@@ -318,6 +322,7 @@ class MainSimulation:
         try:
             self.prologConnector = DataManager(self.row, self.column, self.grid)
             self.prologConnector.setup()
+            self.availableSlot = self.prologConnector.getLenPark()
         except IndexError as e:
             message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
             messagebox.showerror("Invalid Dimension", message)
@@ -353,26 +358,39 @@ class MainSimulation:
                                       (margin + block) * j + margin,
                                        block, block])
 
-            decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
-            increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
-            decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
-            increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
+##            decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
+##            increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
+##            decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
+##            increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
             start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
             stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
             back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
 
-            window.blit(carEntranceText1, (585,10))
-            window.blit(carEntranceText2, (585,140))
+            window.blit(carEntranceText1, (540,10))
+            window.blit(carEntranceText2, (555,140))
+            self.strCarNo = str(self.carNo)
+            self.carNoText = font3.render(self.strCarNo,True,WHITE)
+            self.strAvailable = str(self.availableSlot)
+            self.availableText = font3.render(self.strAvailable,True,WHITE)
 
-            window.blit(decText1, (560,45))
-            window.blit(incText1, (655,50))
-            window.blit(decText2, (560,175))
-            window.blit(incText2, (655,180))
-
-            window.blit(self.carNoText1, (self.xNumCoor1,50))
-            window.blit(self.carNoText2, (self.xNumCoor2,180))
-
-            
+##            window.blit(decText1, (560,45))
+##            window.blit(incText1, (655,50))
+##            window.blit(decText2, (560,175))
+##            window.blit(incText2, (655,180))
+##
+            if self.availableSlot <= 9:
+                window.blit(self.availableText, (self.xNumCoor1+5,50))
+                if self.carNo <= 9:
+                    window.blit(self.carNoText,(self.xNumCoor2+5,180))
+                elif self.carNo > 9:
+                    window.blit(self.carNoText,(self.xNumCoor2-7,180))
+                    
+            elif self.availableSlot > 9:
+                window.blit(self.availableText, (self.xNumCoor1-7,50))
+                if self.carNo <= 9:
+                    window.blit(self.carNoText,(self.xNumCoor2+5,180))
+                elif self.carNo > 9:
+                    window.blit(self.carNoText,(self.xNumCoor2-7,180))
             window.blit(startText, (592,290))
             window.blit(stopText, (555,365))
             window.blit(backText2, (590,440))
@@ -455,6 +473,7 @@ class MainSimulation:
             window.blit(menuPic,(0,0))
             window.fill(BLACK,((0,0),(525,525)))
             self.drawMap()
+            self.time = (int(round(pygame.time.get_ticks()/1000)))
 ##            self.createCar()
             for event in pygame.event.get():
                 if(event.type == pygame.QUIT):
@@ -477,8 +496,7 @@ class MainSimulation:
 
 
                     if 525> pos[0] > 0 and 525 > pos[1] >0:
-                        if self.grid[row][column] == 3:
-    
+                        if self.grid[row][column] == 3 and self.time > self.delay:
                             temp_car = Car(row*(block+margin),column*(block+margin),(row,column))
                             path = self.prologConnector.findFastestParkingRoute(row,column)
                             temp_car.setPath(path)
@@ -486,11 +504,16 @@ class MainSimulation:
                             #print(path)
                             #print('=========================')
                             self.car_list.append(temp_car)
+                            self.carNo += 1
+                            self.availableSlot -= 1
                             self.clickCountCar += 1
+                            self.delay = self.time+1 
                             if destination != None:
                                 self.grid[destination[0]][destination[1]] = 4
 
-                        elif self.grid[row][column] == 4:
+                                
+
+                        elif self.grid[row][column] == 4 and self.time > self.delay:
                             print(row,",",column)
                             for car in self.car_list:
                                 car_grid = car.getCurrentNode()
@@ -500,8 +523,11 @@ class MainSimulation:
                                     car.setPath(exitPath)
                                     dest = car.getDestination()
                                     car.setExit()
+                                    self.carNo -= 1
+                                    self.availableSlot += 1
                                     self.grid[row][column] = 2
                                     self.clickCountCar -= 1
+                                    self.delay = self.time+1
 ##                                    if(car.getCurrentNode == destination):
 ####                                        self.car_list.remove(car)
 ##                                    else:
