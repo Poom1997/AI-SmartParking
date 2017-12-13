@@ -3,6 +3,7 @@ import csv
 import sys
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 from tkinter.filedialog import asksaveasfilename
 from DataManager import *
 from System_Settings import *
@@ -87,79 +88,112 @@ class EditMap:
         self.parkingMap()
 
     def parkingMap(self):
-        self.grid = []
-        for i in range(self.row):
-            self.grid.append([])
-            for j in range(self.column):
-                if i == 0 or i == self.row-1 or j == 0 or j == self.column-1:
-                    #print("i = ",i, " j = ",j) 
-                    self.grid[i].append(1)
-                else:
-                    self.grid[i].append(0)
+        try:
+            self.grid = []
+            for i in range(self.row):
+                self.grid.append([])
+                for j in range(self.column):
+                    if i == 0 or i == self.row-1 or j == 0 or j == self.column-1:
+                        #print("i = ",i, " j = ",j) 
+                        self.grid[i].append(1)
+                    else:
+                        self.grid[i].append(0)
+        except IndexError as e:
+            message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
+            messagebox.showinfo("Invalid Dimension", message)
                 
     def saveMap(self):
-        self.fileName = asksaveasfilename()
-        with open(self.fileName, 'w') as csvfile:
-            writer = csv.writer(csvfile)
-            [writer.writerow(r) for r in self.grid]
+        try:
+            self.fileName = asksaveasfilename()
+            with open(self.fileName, 'w') as csvfile:
+                writer = csv.writer(csvfile)
+                [writer.writerow(r) for r in self.grid]
+                
+        except FileNotFoundError as e:
+            pass
             
     def loadMap(self):
-        self.grid = []
-        self.file_path = filedialog.askopenfilename()
-        with open(self.file_path, 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            table = [[int(e) for e in r] for r in reader]
+        try:
+            self.grid = []
+            self.file_path = filedialog.askopenfilename()
+            with open(self.file_path, 'r') as csvfile:
+                reader = csv.reader(csvfile)
+                table = [[int(e) for e in r] for r in reader]
 
-        for i in table:
-            if(len(i) is not 0):
-                self.grid.append(i)
-        
+            for i in table:
+                if(len(i) is not 0):
+                    self.grid.append(i)
+
+        except ValueError as e:
+            message = "The file you are trying to load has an invalid data.\n File is Corrupted!"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
+
+        except InvalidDataFormat as e:
+            message = "The file you are trying to load has an invalid data.\n File is Corrupted!"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
+
+        except FileNotFoundError as e:
+            message = "Please select a file to load.\nFile not Found!"
+            messagebox.showinfo("File?", message)
+            m = Menu()
+            m.main_loop()
             
     def drawMap(self):
-        for i in range(self.row):
-            for j in range(self.column):
-                self.color = WHITE
-                if self.grid[i][j] == 0:
+        try:
+            for i in range(self.row):
+                for j in range(self.column):
                     self.color = WHITE
-                    #print(i," and ",j)
-                if self.grid[i][j] == 1:
-                    #print("i = ",i, " j = ",j) 
-                    self.color = RED
-                elif self.grid[i][j] == 2:
-                    self.color = GREEN
-                elif self.grid[i][j] == 3:
-                    self.color = BLUE
-                elif self.grid[i][j] == 4:
-                    self.color = YELLOW
-                elif self.grid[i][j] == 5:
-                    self.color = PURPLE
-                pygame.draw.rect(window,self.color,
-                                 [(margin + block) * j + margin,
-                                  (margin + block) * i + margin,
-                                   block, block])
+                    if self.grid[i][j] == 0:
+                        self.color = WHITE
+                        #print(i," and ",j)
+                    if self.grid[i][j] == 1:
+                        #print("i = ",i, " j = ",j) 
+                        self.color = RED
+                    elif self.grid[i][j] == 2:
+                        self.color = GREEN
+                    elif self.grid[i][j] == 3:
+                        self.color = BLUE
+                    elif self.grid[i][j] == 4:
+                        self.color = YELLOW
+                    elif self.grid[i][j] == 5:
+                        self.color = PURPLE
+                    pygame.draw.rect(window,self.color,
+                                     [(margin + block) * j + margin,
+                                      (margin + block) * i + margin,
+                                       block, block])
 
-        green_button  = pygame.draw.rect(window,GREEN, (550,50,130,50))
-        red_button    = pygame.draw.rect(window,RED,   (550,115,130,50))
-        blue_button   = pygame.draw.rect(window,BLUE,  (550,180,130,50))
-        purple_button = pygame.draw.rect(window,PURPLE,(550,245,130,50))
-        white_button  = pygame.draw.rect(window,WHITE, (550,310,130,50))
-        
-        save_button = pygame.draw.rect(window,CYAN,(550,385,130,25))
-        back_button = pygame.draw.rect(window,CYAN,(550,430,130,25))
-        load_button = pygame.draw.rect(window,CYAN,(550,475,130,25))
+            green_button  = pygame.draw.rect(window,GREEN, (550,50,130,50))
+            red_button    = pygame.draw.rect(window,RED,   (550,115,130,50))
+            blue_button   = pygame.draw.rect(window,BLUE,  (550,180,130,50))
+            purple_button = pygame.draw.rect(window,PURPLE,(550,245,130,50))
+            white_button  = pygame.draw.rect(window,WHITE, (550,310,130,50))
+            
+            save_button = pygame.draw.rect(window,CYAN,(550,385,130,25))
+            back_button = pygame.draw.rect(window,CYAN,(550,430,130,25))
+            load_button = pygame.draw.rect(window,CYAN,(550,475,130,25))
 
-        window.blit(panelText, (541,10))
-        window.blit(parkingText, (560,60))
-        window.blit(wallText,(585,123))
-        window.blit(entranceText,(565,190))
-        window.blit(exitText,(590,253))
-        window.blit(pathText,(590,318))
+            window.blit(panelText, (541,10))
+            window.blit(parkingText, (560,60))
+            window.blit(wallText,(585,123))
+            window.blit(entranceText,(565,190))
+            window.blit(exitText,(590,253))
+            window.blit(pathText,(590,318))
 
-        
-        window.blit(saveText,(594,387))
-        window.blit(loadText,(594,432))
-        window.blit(backText,(595,477))
-           
+            
+            window.blit(saveText,(594,387))
+            window.blit(loadText,(594,432))
+            window.blit(backText,(595,477))
+            
+        except IndexError as e:
+            message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
+            messagebox.showinfo("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
+            
     def main_loop(self):
         #Event Handling
         while self.run:
@@ -248,72 +282,103 @@ class MainSimulation:
         self.setup()
 
     def parkingMap(self):
-        self.grid = []
-        with open(self.file, 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            table = [[int(e) for e in r] for r in reader]
+        try:
+            self.grid = []
+            with open(self.file, 'r') as csvfile:
+                reader = csv.reader(csvfile)
+                table = [[int(e) for e in r] for r in reader]
 
-        for i in table:
-            if(len(i) is not 0):
-                self.grid.append(i)
+            for i in table:
+                if(len(i) is not 0):
+                    self.grid.append(i)
+                    
+        except ValueError as e:
+            message = "The file you are trying to load has an invalid data.\n File is Corrupted!"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
+
+        except InvalidDataFormat as e:
+            message = "The file you are trying to load has an invalid data.\n File is Corrupted!"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
+
+        except FileNotFoundError as e:
+            message = "Please select a file to load.\nFile not Found!"
+            messagebox.showinfo("File?", message)
+            m = Menu()
+            m.main_loop()
 
     def setup(self):
         print("in")
-        self.prologConnector = DataManager(self.row, self.column, self.grid)
-        self.prologConnector.setup()
+        try:
+            self.prologConnector = DataManager(self.row, self.column, self.grid)
+            self.prologConnector.setup()
+        except IndexError as e:
+            message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
 
     def drawMap(self):
-        self.strCarNo1 = str(self.carNo1)
-        self.strCarNo2 = str(self.carNo2)
-        self.carNoText1 = font3.render(self.strCarNo1,True, self.tempColor)
-        self.carNoText2 = font3.render(self.strCarNo2,True, self.tempColor)
-        parkingText = font1.render("Car Park",True, BLACK)
-        for i in range(self.row):
-            for j in range(self.column):
-                self.color = WHITE
-                if self.grid[i][j] == 1:
-                    pass
-                    #print(i," and ",j)
-                if self.grid[i][j] == 1:
-                    #print("i = ",i, " j = ",j) 
-                    self.color = RED
-                elif self.grid[i][j] == 2:
-                    self.color = GREEN
-                elif self.grid[i][j] == 3:
-                    self.color = BLUE
-                elif self.grid[i][j] == 4:
-                    self.color = YELLOW
-                elif self.grid[i][j] == 5:
-                    self.color = PURPLE
-                pygame.draw.rect(window,self.color,
-                                 [(margin + block) * j + margin,
-                                  (margin + block) * i + margin,
-                                   block, block])
+        try:
+            self.strCarNo1 = str(self.carNo1)
+            self.strCarNo2 = str(self.carNo2)
+            self.carNoText1 = font3.render(self.strCarNo1,True, self.tempColor)
+            self.carNoText2 = font3.render(self.strCarNo2,True, self.tempColor)
+            parkingText = font1.render("Car Park",True, BLACK)
+            for i in range(self.row):
+                for j in range(self.column):
+                    self.color = WHITE
+                    if self.grid[i][j] == 1:
+                        pass
+                        #print(i," and ",j)
+                    if self.grid[i][j] == 1:
+                        #print("i = ",i, " j = ",j) 
+                        self.color = RED
+                    elif self.grid[i][j] == 2:
+                        self.color = GREEN
+                    elif self.grid[i][j] == 3:
+                        self.color = BLUE
+                    elif self.grid[i][j] == 4:
+                        self.color = YELLOW
+                    elif self.grid[i][j] == 5:
+                        self.color = PURPLE
+                    pygame.draw.rect(window,self.color,
+                                     [(margin + block) * j + margin,
+                                      (margin + block) * i + margin,
+                                       block, block])
 
-        decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
-        increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
-        decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
-        increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
-        start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
-        stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
-        back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
+            decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
+            increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
+            decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
+            increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
+            start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
+            stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
+            back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
 
-        window.blit(carEntranceText1, (585,10))
-        window.blit(carEntranceText2, (585,140))
+            window.blit(carEntranceText1, (585,10))
+            window.blit(carEntranceText2, (585,140))
 
-        window.blit(decText1, (560,45))
-        window.blit(incText1, (655,50))
-        window.blit(decText2, (560,175))
-        window.blit(incText2, (655,180))
+            window.blit(decText1, (560,45))
+            window.blit(incText1, (655,50))
+            window.blit(decText2, (560,175))
+            window.blit(incText2, (655,180))
 
-        window.blit(self.carNoText1, (self.xNumCoor1,50))
-        window.blit(self.carNoText2, (self.xNumCoor2,180))
+            window.blit(self.carNoText1, (self.xNumCoor1,50))
+            window.blit(self.carNoText2, (self.xNumCoor2,180))
 
-        
-        window.blit(startText, (592,290))
-        window.blit(stopText, (555,365))
-        window.blit(backText2, (590,440))
+            
+            window.blit(startText, (592,290))
+            window.blit(stopText, (555,365))
+            window.blit(backText2, (590,440))
 
+        except IndexError as e:
+            message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
+            messagebox.showerror("Invalid Dimension", message)
+            m = Menu()
+            m.main_loop()
         
 
 
