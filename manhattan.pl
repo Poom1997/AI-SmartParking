@@ -1,15 +1,3 @@
-manhattan(n1,9).
-manhattan(n10,2).
-manhattan(n12,4).
-manhattan(n13,0).
-manhattan(n14,1).
-manhattan(n15,2).
-manhattan(n16,3).
-manhattan(n2,8).
-manhattan(n3,7).
-manhattan(n4,6).
-manhattan(n8,5).
-manhattan(n9,1).
 manhattan(n102,224).
 manhattan(n104,216).
 manhattan(n106,214).

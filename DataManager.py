@@ -34,6 +34,9 @@ testData2 = [[0, 0, 2],
 
 testReturn = [6,3,0,1,2,5,8]
 
+class InvalidDataFormat(Exception):
+    pass
+
 class DataManager:
     def __init__(self, row, column, inputData = []):
         self.connector = GraphManager()
@@ -49,17 +52,20 @@ class DataManager:
     def setup(self):
         adjcencyMatrix = self.generateZeroMatrix()
         freeNode = []
+        entranceNode = []
         exitNode = []
         newMatrixRow = -1
         for i in range(0,self.row):
             for j in range(0,self.col):
                 newMatrixRow+=1
                 #check for restricted block
+                if(self.inputData[i][j] > 4 or self.inputData[i][j] < 0):
+                    raise InvalidDataFormat()
                 if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     freeNode.append(newMatrixRow)
 ##                if(self.inputData[i][j] == 2):
-##                    freeNode.append(newMatrixRow)
-##                elif(self.inputData[i][j] == 3):
+##                    entranceNode.append(newMatrixRow)
+##                elif(self.inputData[i][j] == 2):
 ##                    exitNode.append(newMatrixRow)
                 if(self.inputData[i][j] == 0 or self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     #check-left
@@ -87,6 +93,17 @@ class DataManager:
         self.connector.setGraph(adjcencyMatrix, freeNode)
 
     def findFastestRoute(self, a=601, b=623, status = 'enter'):
+        self.outputData = self.connector.getPath(a,b,status)
+        #print(self.outputData)
+        return self.returnTuple()
+
+    def findFastestParkingRoute(self, row, col):
+        print(row * self.row-1 + col-1)
+        self.outputData = self.connector.park(row * self.row-1 + col-1)
+        #print(self.outputData)
+        return self.returnTuple()
+    
+    def findFastestExitRoute(self, a=601, b=623, status = 'enter'):
         self.outputData = self.connector.getPath(a,b,status)
         #print(self.outputData)
         return self.returnTuple()
