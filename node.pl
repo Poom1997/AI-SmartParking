@@ -1,11 +1,9 @@
-node(n6, n31,1).
 node(n27, n28,1).
 node(n27, n52,1).
 node(n28, n27,1).
 node(n28, n29,1).
 node(n29, n28,1).
 node(n29, n54,1).
-node(n31, n6,1).
 node(n31, n32,1).
 node(n31, n56,1).
 node(n32, n31,1).
@@ -579,4 +577,3 @@ node(n597, n596,1).
 node(n599, n574,1).
 node(n599, n624,1).
 node(n602, n577,1).
-node(n624, n599,1).

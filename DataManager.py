@@ -63,29 +63,29 @@ class DataManager:
                     raise InvalidDataFormat()
 ##                if(self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
 ##                    freeNode.append(newMatrixRow)
-                if(self.inputData[i][j] == 3):
+                if(self.inputData[i][j] == 2):
                     parkingNode.append(newMatrixRow)
                 elif(self.inputData[i][j] == 5):
                     exitNode.append(newMatrixRow)
                 if(self.inputData[i][j] == 0 or self.inputData[i][j] == 2 or self.inputData[i][j] == 3):
                     #check-left
                     if(j-1 >= 0):
-                        if(self.inputData[i][j-1] == 0 or self.inputData[i][j-1] == 2 or self.inputData[i][j-1] == 3):
+                        if(self.inputData[i][j-1] == 0 or self.inputData[i][j-1] == 2 or self.inputData[i][j-1] == 3 or self.inputData[i][j-1] == 5):
                             adjcencyMatrix[newMatrixRow][newMatrixRow-1] = 1
 
                     #check-right
                     if(j+1 <= col-1):
-                        if(self.inputData[i][j+1] == 0 or self.inputData[i][j+1] == 2 or self.inputData[i][j+1] == 3):
+                        if(self.inputData[i][j+1] == 0 or self.inputData[i][j+1] == 2 or self.inputData[i][j+1] == 3 or self.inputData[i][j+1] == 5):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+1] = 1
                             
                     #check-up
                     if(i-1 >= 0):
-                        if(self.inputData[i-1][j] == 0 or self.inputData[i-1][j] == 2 or self.inputData[i-1][j] == 3):
+                        if(self.inputData[i-1][j] == 0 or self.inputData[i-1][j] == 2 or self.inputData[i-1][j] == 3 or self.inputData[i-1][j] == 5):
                             adjcencyMatrix[newMatrixRow][newMatrixRow-col] = 1
                             
                     #check-down
                     if(i+1 <= row-1):
-                        if(self.inputData[i+1][j] == 0 or self.inputData[i+1][j] == 2 or self.inputData[i+1][j] == 3):
+                        if(self.inputData[i+1][j] == 0 or self.inputData[i+1][j] == 2 or self.inputData[i+1][j] == 3 or self.inputData[i+1][j] == 5):
                             adjcencyMatrix[newMatrixRow][newMatrixRow+col] = 1
 
         print(parkingNode)
@@ -99,12 +99,13 @@ class DataManager:
 ##        return self.returnTuple()
 
     def findFastestParkingRoute(self, row, col):
-        print(row * self.row-1 + col-1)
+        print((row * self.row) + col)
         self.outputData = self.connector.park(((row * self.row) + col))
         #print(self.outputData)
         return self.returnTuple()
     
     def findFastestExitRoute(self, row, col):
+        print((row * self.row) + col)
         self.outputData = self.connector.autoexit(((row * self.row) + col))
         #print(self.outputData)
         return self.returnTuple()
@@ -122,9 +123,9 @@ class DataManager:
 ##a.setup()
 ##print("--- %s seconds for setup ---" % (time.time() - start_time))
 ##start_time = time.time()
-##print(a.findFastestRoute(601,623))
+##print(a.findFastestParkingRoute(24,1))
 ##print("--- %s seconds for shortest Path ---" % (time.time() - start_time))
 ##start_time = time.time()
-##print(a.findFastestRoute(601,623))
+##print(a.findFastestExitRoute(22,23))
 ##print("--- %s seconds for shortest Path ---" % (time.time() - start_time))
 
