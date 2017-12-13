@@ -7,6 +7,27 @@ from tkinter.filedialog import asksaveasfilename
 from DataManager import *
 from System_Settings import *
 
+class Car:
+    def __init__(self, positionX = 0, positionY = 0):
+        self.positionX = positionX
+        self.positionY = positionX
+
+    def moveLeft(self):
+        self.positionX -= 1
+
+    def moveRight(self):
+        self.positionX += 1
+
+    def moveUp(self):
+        self.positionY += 1
+
+    def moveDown(self):
+        self.positionY -= 1
+
+    def update(self):
+        return (self.positionX, self.positionY)
+
+        
 class Menu:
     def __init__(self):
         self.run = True
