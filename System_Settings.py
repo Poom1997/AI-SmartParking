@@ -65,6 +65,7 @@ margin = 1
 block = 20
 
 #Setup
+global window
 window = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Smart Parking")
 clock=pygame.time.Clock()
