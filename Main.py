@@ -1,13 +1,18 @@
 import pygame
 import csv
 import sys
+import tkinter as tk
+from tkinter import filedialog
+from tkinter.filedialog import asksaveasfilename
 from DataManager import *
 from System_Settings import *
 
 class Menu:
     def __init__(self):
         self.run = True
-        self.simulate = MainSimulation()
+        self.file_path = ""
+        self.root = tk.Tk()
+        self.root.withdraw()
         self.edit = EditMap()
         self.drawMenu()
 
@@ -31,6 +36,8 @@ class Menu:
                     if 350 > pos[0] > 70 and 310 > pos[1] > 240:
                         self.edit.main_loop()
                     elif 350 > pos[0] > 70 and 430 > pos[1] > 360:
+                        self.file_path = filedialog.askopenfilename()
+                        self.simulate = MainSimulation(self.file_path)
                         self.simulate.main_loop()
                     elif 680 > pos[0] > 525 and 500 > pos[1] > 460:
                         pygame.quit()
@@ -45,6 +52,8 @@ class Menu:
 #Start Map edit Mode
 class EditMap:
     def __init__(self):
+        self.root = tk.Tk()
+        self.root.withdraw()
         self.x = 0
         self.y = 0
         self.row = 25
@@ -68,13 +77,15 @@ class EditMap:
                     self.grid[i].append(0)
                 
     def saveMap(self):
-        with open('test_file.csv', 'w') as csvfile:
+        self.fileName = asksaveasfilename()
+        with open(self.fileName, 'w') as csvfile:
             writer = csv.writer(csvfile)
             [writer.writerow(r) for r in self.grid]
             
     def loadMap(self):
         self.grid = []
-        with open('test_file.csv', 'r') as csvfile:
+        self.file_path = filedialog.askopenfilename()
+        with open(self.file_path, 'r') as csvfile:
             reader = csv.reader(csvfile)
             table = [[int(e) for e in r] for r in reader]
 
@@ -177,34 +188,8 @@ class EditMap:
             
 #Start Simulation Mode
 class MainSimulation:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.row = 25
-        self.column = 25
-        self.prologConnector = None
-        self.run = True
-        self.move = False
-        self.calculate = True
-        self.carNum = 0
-        self.carPosX = 0
-        self.carPosY = 0
-        self.initPosX = 0
-        self.initPosY = 0
-        self.currentMovingNode = 0
-
-        self.carNo1 = 8
-        self.carNo2 = 5
-        self.tempColor = WHITE
-        
-        self.grid = []
-        self.pathway = []
-        
-        self.carLocation = 22
-        
-        self.parkingMap()
-        self.setup()
-    def __init__(self):
+    def __init__(self,filePath):
+        self.file = filePath
         self.x = 0
         self.y = 0
         self.row = 25
@@ -237,7 +222,7 @@ class MainSimulation:
 
     def parkingMap(self):
         self.grid = []
-        with open('test_file.csv', 'r') as csvfile:
+        with open(self.file, 'r') as csvfile:
             reader = csv.reader(csvfile)
             table = [[int(e) for e in r] for r in reader]
 
