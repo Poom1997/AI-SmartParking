@@ -56,11 +56,44 @@ class GraphManager:
         #exit at nearest exit (use prolog)
         if(node not in self.unavaible_park):
             return
-        path_list = self.getPath(node ,exit_node - 1,'exit')
+        
+        heuristic_exit_list = []
+        heuristic_list = []
+        exit_node = 0
+        heuristic_list = self.graph.getHeuristic(node + 1)
+        
+        for i in heuristic_list:
+            if (int(i.split(':')[0][1:])-1 in self.exit):
+                heuristic_exit_list.append(i)
+    
+        f = open("exit.pl","w")
+        fact_list = ""
+        for fact in heuristic_exit_list:
+            fact_buffer = fact.split(':')
+            if(int(fact_buffer[0][1:]) - 1 in self.exit):
+                fact_list += ('exit(' + fact_buffer[0] + ',' + fact_buffer[1] + ').\n')
+        f.write(fact_list)
+        f.close()
+        if fact_list == "":
+            return []
+        
+        p = Prolog()
+        p.consult("exit.pl")
+        p.consult("utility.pl")
+        result = p.query("exitnode(" + str(['n' + str(x+1) for x in self.exit]).replace('\'',"") + ",Result).")
+        exit_node = str(list(result)[0]['Result'])
+        self.avaible_park.append(node)
+        self.unavaible_park.remove(node)
+        path_list = self.getPath(node ,int(exit_node[1:]) - 1,'exit')
         return path_list
 
-    def exit(self, node):
-        pass
+    def manual_exit(self, node, exit_node):
+        if(node not in self.unavaible_park or exit_node not in self.exit):
+            return
+        self.avaible_park.append(node)
+        self.unavaible_park.remove(node)
+        return self.getPath(node ,exit_node ,'exit')
+                
 
     def printNode(self):
         self.graph.printAllNode()

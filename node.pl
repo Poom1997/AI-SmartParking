@@ -7,11 +7,15 @@ node(n4, n3,1).
 node(n4, n8,1).
 node(n8, n4,1).
 node(n8, n12,1).
+node(n9, n10,1).
 node(n9, n13,1).
+node(n10, n9,1).
 node(n10, n14,1).
 node(n12, n8,1).
 node(n12, n16,1).
+node(n13, n9,1).
 node(n13, n14,1).
+node(n14, n10,1).
 node(n14, n13,1).
 node(n14, n15,1).
 node(n15, n14,1).

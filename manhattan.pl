@@ -1,7 +1,7 @@
 manhattan(n1,9).
-manhattan(n10,0).
+manhattan(n10,2).
 manhattan(n12,4).
-manhattan(n13,2).
+manhattan(n13,0).
 manhattan(n14,1).
 manhattan(n15,2).
 manhattan(n16,3).
