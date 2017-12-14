@@ -9,27 +9,6 @@ from DataManager import *
 from System_Settings import *
 from Car import *
 
-##class Car:
-##    def __init__(self, positionX = 0, positionY = 0):
-##        self.positionX = positionX
-##        self.positionY = positionX
-##
-##    def moveLeft(self):
-##        self.positionX -= 1
-##
-##    def moveRight(self):
-##        self.positionX += 1
-##
-##    def moveUp(self):
-##        self.positionY += 1
-##
-##    def moveDown(self):
-##        self.positionY -= 1
-##
-##    def update(self):
-##        return (self.positionX, self.positionY)
-
-        
 class Menu:
     def __init__(self):
         self.run = True
@@ -59,7 +38,6 @@ class Menu:
                     if 350 > pos[0] > 70 and 310 > pos[1] > 240:
                         self.edit.main_loop()
                     elif 350 > pos[0] > 70 and 430 > pos[1] > 360:
-##                        self.file_path = filedialog.askopenfilename()
                         self.simulate = MainSimulation()
                         self.simulate.main_loop()
                     elif 680 > pos[0] > 525 and 500 > pos[1] > 460:
@@ -69,8 +47,6 @@ class Menu:
 
             pygame.display.update()
             clock.tick(80)
-
-    
 
 #Start Map edit Mode
 class EditMap:
@@ -95,7 +71,6 @@ class EditMap:
                 self.grid.append([])
                 for j in range(self.column):
                     if i == 0 or i == self.row-1 or j == 0 or j == self.column-1:
-                        #print("i = ",i, " j = ",j) 
                         self.grid[i].append(1)
                     else:
                         self.grid[i].append(0)
@@ -151,9 +126,7 @@ class EditMap:
                     if self.grid[i][j] == 0:
                         self.pic = pathSign
                         self.color = WHITE
-                        #print(i," and ",j)
                     if self.grid[i][j] == 1:
-                        #print("i = ",i, " j = ",j)
                         self.pic = wallSign
                         self.color = RED
                     elif self.grid[i][j] == 2:
@@ -194,7 +167,6 @@ class EditMap:
             window.blit(saveText,(594,387))
             window.blit(loadText,(594,432))
             window.blit(backText,(595,477))
-##            print(self.grid)
             
         except IndexError as e:
             message = "The file you are trying to load has an invalid dimension.\n Valid Dimensions is 25x25"
@@ -256,7 +228,6 @@ class EditMap:
 #Start Simulation Mode
 class MainSimulation:
     def __init__(self):
-##        self.file = filePath
         self.x = 0
         self.y = 0
         self.row = 25
@@ -285,16 +256,12 @@ class MainSimulation:
         self.delay = 0
         self.time = 0
         self.pic = pathSign
-
         self.carNo1 = 0
         self.carNo2 = 0
         self.tempColor = WHITE
-        
         self.grid = []
         self.pathway = []
-        
         self.carLocation = 22
-        
         self.parkingMap()
         self.setup()
         
@@ -373,13 +340,7 @@ class MainSimulation:
                     window.blit(self.pic,[(margin + block) * j + margin,
                                       (margin + block) * i + margin,
                                        block, block])
-                                     
 
-##            decrease_button1 = pygame.draw.rect(window,WHITE,(550,50,40,70))
-##            increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
-##            decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
-##            increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
-##            start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
             stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
             back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
 
@@ -392,11 +353,6 @@ class MainSimulation:
             self.strAvailable = str(self.availableSlot)
             self.availableText = font3.render(self.strAvailable,True,WHITE)
 
-##            window.blit(decText1, (560,45))
-##            window.blit(incText1, (655,50))
-##            window.blit(decText2, (560,175))
-##            window.blit(incText2, (655,180))
-##
             if self.availableSlot <= 9:
                 window.blit(self.availableText, (self.xNumCoor1+5,50))
                 if self.carNo <= 9:
@@ -410,7 +366,6 @@ class MainSimulation:
                     window.blit(self.carNoText,(self.xNumCoor2+5,230))
                 elif self.carNo > 9:
                     window.blit(self.carNoText,(self.xNumCoor2-7,230))
-##            window.blit(startText, (592,290))
             window.blit(stopText, (585,365))
             window.blit(backText2, (590,440))
 
@@ -420,10 +375,6 @@ class MainSimulation:
             m = Menu()
             m.main_loop()
         
-
-
-
-    
     def main_loop(self):
         #Event Handling
         while self.run:
@@ -431,7 +382,6 @@ class MainSimulation:
             window.fill(BLACK,((0,0),(525,525)))
             self.drawMap()
             self.time = (int(round(pygame.time.get_ticks()/1000)))
-##            self.createCar()
             for event in pygame.event.get():
                 if(event.type == pygame.QUIT):
                     pygame.quit()
@@ -440,18 +390,6 @@ class MainSimulation:
                     pos = pygame.mouse.get_pos()
                     Y = pos[1] // (block + margin)
                     X = pos[0] // (block + margin)
-                    #print(column)
-                    #print(row)
-                    #print("--------------------------------")
-##                    if 550+140 > pos[0] > 550 and 290+35 > pos[1] > 290:
-##                        print("Start")
-                    
-##                        if(self.calculate == True):
-##                            self.carPosY-=2
-##                            print('in')
-##                            self.calculatePath()
-
-
                     if pos[0] <= 525 and pos[1] <= 525:
                         if self.grid[Y][X] == 3 and self.time > self.delay:
                             print("Entrance = ",X,",",Y)
@@ -460,8 +398,6 @@ class MainSimulation:
                             if path != []:
                                 temp_car.setPath(path)
                                 destination = temp_car.getDestination()
-                                #print(path)
-                                #print('=========================')
                                 self.car_list.append(temp_car)
                                 self.carNo += 1
                                 self.availableSlot -= 1
@@ -485,10 +421,6 @@ class MainSimulation:
                                     self.grid[Y][X] = 2
                                     self.clickCountCar -= 1
                                     self.delay = self.time+1
-##                                    if(car.getCurrentNode == destination):
-####                                        self.car_list.remove(car)
-##                                    else:
-##                                        print("Still Running")
                                     
                                 else:
                                     print("Wrong")
@@ -569,15 +501,10 @@ class MainSimulation:
                         else:
                             self.carNo2 += 1
                             self.xNumCoor2 = 605
-
-##                    elif self.grid[row][column] == 4:
-##                        print("Goto Exit")
-
                     else:
                         print("Out of bound")
                         
             ## Main Game Loop      
-            
             if self.isPause == False:
                 for car in self.car_list:
                     car.move()
@@ -586,16 +513,9 @@ class MainSimulation:
                         print('Car lenght')
                         print(len(self.car_list))
                         continue
-                        
-        ##            if(self.move == True):
-        ##                self.moveToCoordinate()
 
             else: pass
             for car in self.car_list:
                     car.draw()
             pygame.display.update()
             clock.tick(120)
-            
-    
-
-        

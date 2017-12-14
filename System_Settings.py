@@ -29,12 +29,9 @@ wallText = font1.render("Wall",True, BLACK)
 entranceText = font1.render("Entrance",True,WHITE)
 exitText = font1.render("Exit",True,BLACK)
 pathText = font1.render("Path",True,BLACK)
-
-
 saveText = font2.render("Save",True,BLACK)
 loadText = font2.render("Load",True,BLACK)
 backText = font2.render("Back",True,BLACK)
-
 
 #Text in Simulation
 carEntranceText1 = font1.render("Available Slot",True,CYAN)
@@ -43,11 +40,8 @@ decText1 = font3.render("-",True,BLACK)
 incText1 = font3.render("+",True,BLACK)
 decText2 = font3.render("-",True,BLACK)
 incText2 = font3.render("+",True,BLACK)
-
 startText = font1.render("Start!",True,BLACK)
-
 backText2 = font1.render("Back",True,BLACK)
-
 
 #picture
 menuPic = pygame.image.load(os.path.join("photo","backgroundMenu.png"))
@@ -65,9 +59,6 @@ parkingSign = pygame.image.load(os.path.join("photo","parkingSign.png"))
 exitSign = pygame.image.load(os.path.join("photo","exitSign.png"))
 pathSign = pygame.image.load(os.path.join("photo","pathSign.png"))
 carInSign = pygame.image.load(os.path.join("photo","carInSign.png"))
-
-
-
 
 #System Property
 margin = 1

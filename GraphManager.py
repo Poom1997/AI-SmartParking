@@ -93,7 +93,6 @@ class GraphManager:
         self.avaible_park.append(node)
         self.unavaible_park.remove(node)
         return self.getPath(node ,exit_node ,'exit')
-                
 
     def printNode(self):
         self.graph.printAllNode()

@@ -35,7 +35,6 @@ class Car:
         if (self.isMoving == False):
             #not reach destination(go on)
             if(self.path != []):
-                #print(self.path)
                 self.nextNode = self.path.pop(0)
                 self.isMoving = True
             #reach destination(stop)    
@@ -45,22 +44,18 @@ class Car:
         if(self.nextNode[0] == self.current_Node[0]):
             #go down
             if(self.nextNode[1] > self.current_Node[1]):
-                #print('down')
                 self.posX += 2.1
             #go up
             elif(self.nextNode[1] < self.current_Node[1]):
-                #print('up')
                 self.posX -= 2.1
             self.move_range += 2.1
             
         elif(self.nextNode[1] == self.current_Node[1]):
             #go right
             if(self.nextNode[0] > self.current_Node[0]):
-                #print('right')
                 self.posY += 2.1
             #go left
             elif(self.nextNode[0] < self.current_Node[0]):
-                #print('left')
                 self.posY -= 2.1
             self.move_range += 2.1
 

@@ -2,39 +2,7 @@ from pyswip import Prolog
 
 class Graph:
     def __init__(self):
-        #testing matrix 9 node
         self.adj_mat = []
-        '''
-         = [[0,1,0,1,0,0,0,0,0],
-                        [1,0,1,0,0,0,0,0,0],
-                        [0,1,0,0,0,1,0,0,0],
-                        [1,0,0,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,0,0],
-                        [0,0,1,0,0,0,0,0,1],
-                        [0,0,0,1,0,0,0,1,0],
-                        [0,0,0,0,0,0,1,0,1],
-                        [0,0,0,0,0,1,0,1,0]];
-        '''
-
-        '''
-        test data 2  = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],
-                        [0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0],
-                        [0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-                        [0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0],
-                        [0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
-                        [0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0]];
-
-        '''  
         self.heuristic_dict = {}
         self.goal = []
 
@@ -67,7 +35,6 @@ class Graph:
     def updateHeuristic(self):
         #generate heuristic (update every times that Map has been modified)
         #update to dictionary (ready to use)
-        #use to debug
         self.heuristic_dict = {}
         for Node in self.goal:
             destination = str(Node)
@@ -88,8 +55,7 @@ class Graph:
         #implement !!! A*!!!  use prolog  -genarate fact from adj_mat
         #findpath.p
         #return list of path from start node to destination
-        #generate assertz H(n) first
-
+        #generate assert H(n) first
         list_heuristic = self.heuristic_dict['n' + str(B)]
         f= open("manhattan.pl","w")
         fact_buffer = ""
@@ -116,7 +82,6 @@ class Graph:
         self.updateGraph()
         path_list = []
         
-        #print(list(result)[0]['Result'][0])
         try:
             for i in list(result)[0]['Result']:
                 path_list.append(str(i)[1:])
@@ -127,9 +92,7 @@ class Graph:
     def getHeuristic(self, Node):
         return self.heuristic_dict['n' + str(Node)]
  
-    #use to debug  
     def printAllNode(self):
-        #use to debug
         for i in range(0, len(self.adj_mat)):
             for j in range(0, len(self.adj_mat[i])):
                 print(self.adj_mat[i][j], end = "  ")
