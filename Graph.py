@@ -117,9 +117,11 @@ class Graph:
         path_list = []
         
         #print(list(result)[0]['Result'][0])
-    
-        for i in list(result)[0]['Result']:
-            path_list.append(str(i)[1:])
+        try:
+            for i in list(result)[0]['Result']:
+                path_list.append(str(i)[1:])
+        except:
+            return []
         return [int(x) for x in path_list]
     
     def getHeuristic(self, Node):
