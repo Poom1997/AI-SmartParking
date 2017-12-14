@@ -1,1 +1,10 @@
-park(n574,2).
+park(n202,43).
+park(n204,41).
+park(n206,39).
+park(n402,51).
+park(n404,49).
+park(n406,47).
+park(n408,45).
+park(n410,43).
+park(n412,41).
+park(n414,39).

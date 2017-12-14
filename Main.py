@@ -262,6 +262,7 @@ class MainSimulation:
         self.row = 25
         self.column = 25
         self.prologConnector = None
+        self.isPause = False
         self.run = True
         self.move = False
         self.moveLeft = False
@@ -279,6 +280,7 @@ class MainSimulation:
         self.car_list = []
         self.availableSlot = 0
         self.clickCountCar = 0
+        self.wordPause = "Pause"
         self.carNo = 0
         self.delay = 0
         self.time = 0
@@ -377,12 +379,14 @@ class MainSimulation:
 ##            increase_button1 = pygame.draw.rect(window,WHITE,(650,50,40,70))
 ##            decrease_button2 = pygame.draw.rect(window,WHITE,(550,180,40,70))
 ##            increase_button2 = pygame.draw.rect(window,WHITE,(650,180,40,70))
-            start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
+##            start_button = pygame.draw.rect(window,CYAN,(550,290,140,35))
             stop_button = pygame.draw.rect(window,CYAN,(550,365,140,35))
             back_button = pygame.draw.rect(window,CYAN,(550,440,140,35))
 
+            stopText = font1.render(self.wordPause,True,BLACK)
+
             window.blit(carEntranceText1, (540,10))
-            window.blit(carEntranceText2, (555,140))
+            window.blit(carEntranceText2, (555,170))
             self.strCarNo = str(self.carNo)
             self.carNoText = font3.render(self.strCarNo,True,WHITE)
             self.strAvailable = str(self.availableSlot)
@@ -396,18 +400,18 @@ class MainSimulation:
             if self.availableSlot <= 9:
                 window.blit(self.availableText, (self.xNumCoor1+5,50))
                 if self.carNo <= 9:
-                    window.blit(self.carNoText,(self.xNumCoor2+5,180))
+                    window.blit(self.carNoText,(self.xNumCoor2+5,230))
                 elif self.carNo > 9:
-                    window.blit(self.carNoText,(self.xNumCoor2-7,180))
+                    window.blit(self.carNoText,(self.xNumCoor2-7,230))
                     
             elif self.availableSlot > 9:
                 window.blit(self.availableText, (self.xNumCoor1-7,50))
                 if self.carNo <= 9:
-                    window.blit(self.carNoText,(self.xNumCoor2+5,180))
+                    window.blit(self.carNoText,(self.xNumCoor2+5,230))
                 elif self.carNo > 9:
-                    window.blit(self.carNoText,(self.xNumCoor2-7,180))
-            window.blit(startText, (592,290))
-            window.blit(stopText, (555,365))
+                    window.blit(self.carNoText,(self.xNumCoor2-7,230))
+##            window.blit(startText, (592,290))
+            window.blit(stopText, (585,365))
             window.blit(backText2, (590,440))
 
         except IndexError as e:
@@ -493,7 +497,13 @@ class MainSimulation:
                             print("Not the car parking")
                         
                     elif 550+140 > pos[0] > 550 and 365+35 > pos[1] > 365:
-                        print("Stop")
+                       if self.isPause == False:
+                            self.wordPause = "Resume"
+                            self.isPause = True
+                            
+                       elif self.isPause ==True:
+                            self.wordPause = "Pause"
+                            self.isPause = False
                         
                     elif 550+140 > pos[0] > 550 and 440+35 > pos[1] > 440:
                         m = Menu()
@@ -568,18 +578,21 @@ class MainSimulation:
                         
             ## Main Game Loop      
             
+            if self.isPause == False:
+                for car in self.car_list:
+                    car.move()
+                    if ((car.getDestination() == None) and (car.getStatus() == "exit")):
+                        self.car_list.remove(car)
+                        print('Car lenght')
+                        print(len(self.car_list))
+                        continue
+                        
+        ##            if(self.move == True):
+        ##                self.moveToCoordinate()
+
+            else: pass
             for car in self.car_list:
-                car.move()
-                if ((car.getDestination() == None) and (car.getStatus() == "exit")):
-                    self.car_list.remove(car)
-                    print('Car lenght')
-                    print(len(self.car_list))
-                    continue
-                    
-##            if(self.move == True):
-##                self.moveToCoordinate()
-            for car in self.car_list:
-                car.draw()
+                    car.draw()
             pygame.display.update()
             clock.tick(120)
             
