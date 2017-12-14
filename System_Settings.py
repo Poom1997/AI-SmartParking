@@ -5,7 +5,7 @@ import os
 pygame.init()
 display_width = 715
 display_height = 527
-window_title = "Smart Parking"
+window_title = "Smart Parking 1.0.0 (Beta)"
 
 #Color
 WHITE = (192,192,192)
