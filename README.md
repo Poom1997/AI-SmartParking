@@ -24,7 +24,7 @@
 # ADDITIONAL DESCRIPTION
 
   **External Library Dependency:**
-  **1)** Python-Prolog Connector (pyswip) : https://github.com/yuce/pyswip
+  **1)** Python-Prolog Connector (pyswip) : https://github.com/yuce/pyswip <br>
   **2)** Python 3.4.2 and above with PyGame Installed
   
   **External Program Dependency:**
