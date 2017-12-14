@@ -23,14 +23,14 @@
 
 # ADDITIONAL DESCRIPTION
 
-  **External Library Dependency:**
+  **External Library Dependency:**<br>
   **1)** Python-Prolog Connector (pyswip) : https://github.com/yuce/pyswip <br>
-  **2)** Python 3.4.2 and above with PyGame Installed
+  **2)** Python 3.4.2 and above with PyGame Installed<br>
   
-  **External Program Dependency:**
-  **1)** SWI-Prolog 7.5.x and above
+  **External Program Dependency:**<br>
+  **1)** SWI-Prolog 7.5.x and above<br>
 # 
-**PROGRAM VERSION: 1.0.0(Beta)<br>**
+**PROGRAM VERSION: 1.3.7<br>**
 ALL COMPONENTS IN THE BETA VERSION OF THE PROGRAM CAN BE CHANGED OR PUBLISHED WITHOUT ANY RELEASE NOTES<br>
 
 THIS DOCUMENT IS UPDATED AS-OF 14 DECEMBER 2017<br>
