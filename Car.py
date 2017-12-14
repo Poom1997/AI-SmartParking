@@ -46,22 +46,22 @@ class Car:
             #go down
             if(self.nextNode[1] > self.current_Node[1]):
                 #print('down')
-                self.posY += 2.1
+                self.posX += 2.1
             #go up
             elif(self.nextNode[1] < self.current_Node[1]):
                 #print('up')
-                self.posY -= 2.1
+                self.posX -= 2.1
             self.move_range += 2.1
             
         elif(self.nextNode[1] == self.current_Node[1]):
             #go right
             if(self.nextNode[0] > self.current_Node[0]):
                 #print('right')
-                self.posX += 2.1
+                self.posY += 2.1
             #go left
             elif(self.nextNode[0] < self.current_Node[0]):
                 #print('left')
-                self.posX -= 2.1
+                self.posY -= 2.1
             self.move_range += 2.1
 
         #reached grid
