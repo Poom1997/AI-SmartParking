@@ -8,7 +8,7 @@ display_height = 527
 window_title = "Smart Parking"
 
 #Color
-WHITE = (255,255,255)
+WHITE = (192,192,192)
 BLACK = (0,0,0)
 RED = (255,0,0)
 YELLOW = (255,255,0)
@@ -56,6 +56,15 @@ mainMenuPic = pygame.image.load(os.path.join("photo","mainMenu.png"))
 editButtonPic = pygame.image.load(os.path.join("photo","createButton.png"))
 simulateButtonPic = pygame.image.load(os.path.join("photo","simulateButton.png"))
 exitButtonPic = pygame.image.load(os.path.join("photo","exitButton.png"))
+
+
+#Picture Sign
+entranceSign = pygame.image.load(os.path.join("photo","entranceSign.png"))
+wallSign = pygame.image.load(os.path.join("photo","wallSign.png"))
+parkingSign = pygame.image.load(os.path.join("photo","parkingSign.png"))
+exitSign = pygame.image.load(os.path.join("photo","exitSign.png"))
+pathSign = pygame.image.load(os.path.join("photo","pathSign.png"))
+carInSign = pygame.image.load(os.path.join("photo","carInSign.png"))
 
 
 
