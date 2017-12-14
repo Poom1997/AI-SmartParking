@@ -38,14 +38,14 @@ backText = font2.render("Back",True,BLACK)
 
 #Text in Simulation
 carEntranceText1 = font1.render("Available Slot",True,CYAN)
-carEntranceText2 = font1.render("No. of Car",True,CYAN)
+carEntranceText2 = font1.render("No. of Car",True,BLACK)
 decText1 = font3.render("-",True,BLACK)
 incText1 = font3.render("+",True,BLACK)
 decText2 = font3.render("-",True,BLACK)
 incText2 = font3.render("+",True,BLACK)
 
 startText = font1.render("Start!",True,BLACK)
-stopText = font1.render("Stop/Pause",True,BLACK)
+
 backText2 = font1.render("Back",True,BLACK)
 
 
