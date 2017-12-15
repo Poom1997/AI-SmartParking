@@ -30,6 +30,6 @@
   **External Program Dependency:**<br>
   **1)** SWI-Prolog 7.5.x and above<br>
 # 
-**PROGRAM VERSION: 1.3.7<br>**
+**PROGRAM VERSION: 1.5.2<br>**
 
-THIS DOCUMENT IS UPDATED AS-OF 14 DECEMBER 2017<br>
+THIS DOCUMENT IS UPDATED AS-OF 15 DECEMBER 2017<br>
