@@ -27,5 +27,12 @@ exitmin([H|T],Min,Minnode,Result) :-  findall(Y,exit(H,Y),TList),
 					exitmin(T,Min,Minnode,Result).
 
 
+%use to for Grid Lock technic.
+%use to check that current grid still lock or not
+%isLock(CurrentGrid, ListLockedGrid):-
+%				member(CurrentGrid, ListLockedGrid).
+
+isLock(CurrentGrid, [H|T]):- CurrentGrid == H,!.
+isLock(CurrentGrid, [H|T]):- isLock(CurrentGrid, T).
 
 

@@ -8,6 +8,7 @@ from tkinter.filedialog import asksaveasfilename
 from DataManager import *
 from System_Settings import *
 from Car import *
+from GridController import *
 
 class Menu:
     def __init__(self):
@@ -192,35 +193,35 @@ class EditMap:
                         self.grid[row][column] = self.toggleNum
                     elif 550+130 > pos[0] > 550 and 310+50 > pos[1] > 310:
                         self.toggleNum = 0
-                        print("Path")
+                        #print("Path")
                     elif 550+130 > pos[0] > 550 and 115+50 > pos[1] > 115:
                         self.toggleNum = 1
-                        print("Wall")
+                        #print("Wall")
                     elif 550+130 > pos[0] > 550 and 50+50 > pos[1] > 50:
                         self.toggleNum = 2
-                        print("Parking Lot")
+                        #print("Parking Lot")
                     elif 550+130 > pos[0] > 550 and 180+50 > pos[1] > 180:
                         self.toggleNum = 3
-                        print("Entrance")
+                        #print("Entrance")
                     elif 550+130 > pos[0] > 550 and 245+50 > pos[1] > 245:
                         self.toggleNum = 5
-                        print("Exit")
+                        #print("Exit")
                    
                     ## SaveButton
                     elif 550+130 > pos[0] > 550 and 385+25 > pos[1] > 385:
-                        print("saveMap")
+                        #print("saveMap")
                         self.saveMap()
                     ## LoadButton
                     elif 550+130 > pos[0] > 550 and 430+25 > pos[1] > 430:
-                        print("loadMap")
+                        #print("loadMap")
                         self.loadMap()
                     ## ClearButton
                     elif 550 + 130 > pos[0] > 550 and 475+25 > pos[1] > 475:
-                        print('clearMap')
+                        #print('clearMap')
                         m = Menu()
                         m.main_loop()
                     else:
-                        print("Out of bound")
+                        pass
 
             pygame.display.update()
             clock.tick(80)
@@ -296,8 +297,8 @@ class MainSimulation:
             m.main_loop()
 
     def setup(self):
-        print("in")
-        print(self.grid)
+        #print("in")
+        #print(self.grid)
         try:
             self.prologConnector = DataManager(self.row, self.column, self.grid)
             self.prologConnector.setup()
@@ -376,6 +377,7 @@ class MainSimulation:
             m.main_loop()
         
     def main_loop(self):
+        gridController = GridController()
         #Event Handling
         while self.run:
             window.blit(menuPic,(0,0))
@@ -392,8 +394,8 @@ class MainSimulation:
                     X = pos[0] // (block + margin)
                     if pos[0] <= 525 and pos[1] <= 525:
                         if self.grid[Y][X] == 3 and self.time > self.delay:
-                            print("Entrance = ",X,",",Y)
-                            temp_car = Car(X*(block+margin),Y*(block+margin),(Y,X))
+                            #print("Entrance = ",X,",",Y)
+                            temp_car = Car(X*(block+margin),Y*(block+margin),(Y,X),gridController)
                             path = self.prologConnector.findFastestParkingRoute(Y,X)
                             if path != []:
                                 temp_car.setPath(path)
@@ -407,10 +409,10 @@ class MainSimulation:
                                     self.grid[destination[0]][destination[1]] = 4
 
                         elif self.grid[Y][X] == 4 and self.time > self.delay:
-                            print("park = ",X,",",Y)
+                            #print("park = ",X,",",Y)
                             for car in self.car_list:
                                 car_grid = car.getCurrentNode()
-                                print(car_grid)
+                                #print(car_grid)
                                 if Y == car_grid[0] and X == car_grid[1]:
                                     exitPath = self.prologConnector.findFastestExitRoute(Y,X)
                                     car.setPath(exitPath)
@@ -423,10 +425,12 @@ class MainSimulation:
                                     self.delay = self.time+1
                                     
                                 else:
-                                    print("Wrong")
+                                    #print("Wrong")
+                                    pass
                         
                         else:
-                            print("Not the car parking")
+                            #print("Not the car parking")
+                            pass
                         
                     elif 550+140 > pos[0] > 550 and 365+35 > pos[1] > 365:
                        if self.isPause == False:
@@ -502,16 +506,18 @@ class MainSimulation:
                             self.carNo2 += 1
                             self.xNumCoor2 = 605
                     else:
-                        print("Out of bound")
+                        #print("Out of bound")
+                        pass
                         
             ## Main Game Loop      
             if self.isPause == False:
                 for car in self.car_list:
                     car.move()
                     if ((car.getDestination() == None) and (car.getStatus() == "exit")):
+                        car.freeGrid()
                         self.car_list.remove(car)
-                        print('Car lenght')
-                        print(len(self.car_list))
+                        #print('Car lenght')
+                        #print(len(self.car_list))
                         continue
 
             else: pass

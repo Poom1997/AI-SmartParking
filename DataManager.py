@@ -1,5 +1,7 @@
 from GraphManager import *
 import time
+row = 25
+col = 25
 
 class InvalidDataFormat(Exception):
     pass
@@ -56,14 +58,14 @@ class DataManager:
         self.connector.setGraph(adjcencyMatrix, parkingNode, exitNode)
 
     def findFastestParkingRoute(self, row, col):
-        print((row * self.row) + col)
+        #print((row * self.row) + col)
         self.outputData = self.connector.park(((row * self.row) + col))
         if self.outputData == []:
             return []
         return self.returnTuple()
     
     def findFastestExitRoute(self, row, col):
-        print((row * self.row) + col)
+        #print((row * self.row) + col)
         self.outputData = self.connector.autoexit(((row * self.row) + col))
         if self.outputData == []:
             return []

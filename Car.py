@@ -3,7 +3,7 @@ import os
 from System_Settings import *
 
 class Car:
-    def __init__(self, posX,posY, entrace):
+    def __init__(self, posX,posY, entrace, gridController):
         self.posX = posX
         self.posY = posY
         self.current_Node = entrace
@@ -14,6 +14,7 @@ class Car:
         self.move_range = 0
         self.car_pic = pygame.image.load(os.path.join("photo","carUp.png"))
         self.status = ""
+        self.gridController = gridController
 
     def setExit(self):
         self.status = "exit"
@@ -35,8 +36,11 @@ class Car:
         if (self.isMoving == False):
             #not reach destination(go on)
             if(self.path != []):
+                if(self.gridController.isLock(self.path[0])):
+                    return
                 self.nextNode = self.path.pop(0)
                 self.isMoving = True
+                self.gridController.lockGrid(self.nextNode)
             #reach destination(stop)    
             else:
                 return
@@ -64,12 +68,16 @@ class Car:
             self.current_Node = self.nextNode
             self.isMoving = False
             self.move_range = 0
+            self.gridController.unlockGrid(self.current_Node)
 
     def getDestination(self):
         if self.path != []:
             return self.path[-1]
         else:
             return None
+        
+    def freeGrid(self):
+        self.gridController.unlockGrid(self.nextNode)
 
     def draw(self):
         window.blit(self.car_pic,(self.posX, self.posY))
